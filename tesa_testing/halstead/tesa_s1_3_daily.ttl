@@ -1,0 +1,51 @@
+@prefix :     <http://example.org/tesa#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+# ============================================================
+# TESA - Scenario S1: THREE DAILY TRIGGERS
+# Core predicates (operators): a, hasTimeInterval, triggersAction,
+# hasPriority, hasBeginning, inXSDDateTimeStamp, targetEntity, actionType
+# ============================================================
+
+# --- Trigger 1: daily welding check at 08:00 ---
+:WeldingCheckTrigger a :TimeTrigger ;
+    :hasTimeInterval :MorningInterval ;
+    :triggersAction  :WeldingCheckAction ;
+    :hasPriority     5 .
+:MorningInterval a time:Interval ;
+    time:hasBeginning :EightAM .
+:EightAM a time:Instant ;
+    time:inXSDDateTimeStamp "08:00:00" .
+:WeldingCheckAction a :Action ;
+    :targetEntity :StationWelding ;
+    :actionType   "CHECK_STATUS" ;
+    :hasPriority  5 .
+
+# --- Trigger 2: daily throughput cap at 18:00 ---
+:ThroughputTrigger a :TimeTrigger ;
+    :hasTimeInterval :EveningInterval ;
+    :triggersAction  :ThroughputAction ;
+    :hasPriority     7 .
+:EveningInterval a time:Interval ;
+    time:hasBeginning :SixPM .
+:SixPM a time:Instant ;
+    time:inXSDDateTimeStamp "18:00:00" .
+:ThroughputAction a :Action ;
+    :targetEntity :ProductionLine1 ;
+    :actionType   "CHECK_THROUGHPUT" ;
+    :hasPriority  7 .
+
+# --- Trigger 3: daily sensor reset at 00:00 ---
+:SensorResetTrigger a :TimeTrigger ;
+    :hasTimeInterval :MidnightInterval ;
+    :triggersAction  :SensorResetAction ;
+    :hasPriority     9 .
+:MidnightInterval a time:Interval ;
+    time:hasBeginning :Midnight .
+:Midnight a time:Instant ;
+    time:inXSDDateTimeStamp "00:00:00" .
+:SensorResetAction a :Action ;
+    :targetEntity :SensorNetwork ;
+    :actionType   "RESET_SENSORS" ;
+    :hasPriority  9 .

@@ -1,0 +1,30 @@
+@prefix :     <http://example.org/tesa#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+# ============================================================
+# TESA - Scenario S2: TWO MONTHLY TRIGGERS
+# Same 8-predicate vocabulary as S1 (full reuse).
+# ============================================================
+
+# --- Trigger 1: monthly Line1 maintenance, 1st @ 06:00 ---
+:MonthlyMaintenanceTrigger a :TimeTrigger ;
+    :hasTimeInterval :FirstOfMonth ;
+    :triggersAction  :MaintenanceAction ;
+    :hasPriority     8 .
+:FirstOfMonth time:hasBeginning :FirstDay6AM .
+:FirstDay6AM  time:inXSDDateTimeStamp "---01T06:00:00" .
+:MaintenanceAction a :Action ;
+    :targetEntity :ProductionLine1 ;
+    :actionType   "SCHEDULED_MAINTENANCE" .
+
+# --- Trigger 2: monthly report, 15th @ 09:00 ---
+:MonthlyReportTrigger a :TimeTrigger ;
+    :hasTimeInterval :FifteenthOfMonth ;
+    :triggersAction  :ReportAction ;
+    :hasPriority     6 .
+:FifteenthOfMonth time:hasBeginning :FifteenthDay9AM .
+:FifteenthDay9AM  time:inXSDDateTimeStamp "---15T09:00:00" .
+:ReportAction a :Action ;
+    :targetEntity :ReportingSystem ;
+    :actionType   "GENERATE_REPORT" .

@@ -1,0 +1,65 @@
+@prefix :    <http://example.org/psl-app#> .
+@prefix psl:  <http://www.nist.gov/psl/core#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+# ============================================================
+# PSL - Scenario S1: THREE DAILY TRIGGERS
+# PSL requires the Activity / ActivityOccurrence / Timepoint /
+# State / Constraint machinery -> heavier vocabulary (12 predicates):
+# a, occurrenceOf, hasTimepoint, activityName, isScheduled, duration,
+# priority, atTime, recurrence, effectOf, holds, constrains
+# ============================================================
+
+# --- Trigger 1: daily welding check at 08:00 ---
+:WeldingActivity a psl:Activity ;
+    psl:activityName "CHECK_WELDING" ;
+    psl:isScheduled  true .
+:WeldingOccurrence a psl:ActivityOccurrence ;
+    psl:occurrenceOf :WeldingActivity ;
+    psl:hasTimepoint :WeldingTimepoint ;
+    psl:duration     "PT1M" ;
+    psl:priority     5 .
+:WeldingTimepoint a psl:Timepoint ;
+    psl:atTime     "08:00:00" ;
+    psl:recurrence "DAILY" .
+:WeldingEffect a psl:State ;
+    psl:effectOf :WeldingActivity ;
+    psl:holds    :StationWeldingChecked .
+:WeldingConstraint a psl:Constraint ;
+    psl:constrains :WeldingOccurrence .
+
+# --- Trigger 2: daily throughput cap at 18:00 ---
+:ThroughputActivity a psl:Activity ;
+    psl:activityName "CHECK_THROUGHPUT" ;
+    psl:isScheduled  true .
+:ThroughputOccurrence a psl:ActivityOccurrence ;
+    psl:occurrenceOf :ThroughputActivity ;
+    psl:hasTimepoint :ThroughputTimepoint ;
+    psl:duration     "PT5M" ;
+    psl:priority     7 .
+:ThroughputTimepoint a psl:Timepoint ;
+    psl:atTime     "18:00:00" ;
+    psl:recurrence "DAILY" .
+:ThroughputEffect a psl:State ;
+    psl:effectOf :ThroughputActivity ;
+    psl:holds    :ThroughputValidated .
+:ThroughputConstraint a psl:Constraint ;
+    psl:constrains :ThroughputOccurrence .
+
+# --- Trigger 3: daily sensor reset at 00:00 ---
+:SensorResetActivity a psl:Activity ;
+    psl:activityName "RESET_SENSORS" ;
+    psl:isScheduled  true .
+:SensorResetOccurrence a psl:ActivityOccurrence ;
+    psl:occurrenceOf :SensorResetActivity ;
+    psl:hasTimepoint :SensorResetTimepoint ;
+    psl:duration     "PT1M" ;
+    psl:priority     9 .
+:SensorResetTimepoint a psl:Timepoint ;
+    psl:atTime     "00:00:00" ;
+    psl:recurrence "DAILY" .
+:SensorResetEffect a psl:State ;
+    psl:effectOf :SensorResetActivity ;
+    psl:holds    :SensorsReset .
+:SensorResetConstraint a psl:Constraint ;
+    psl:constrains :SensorResetOccurrence .

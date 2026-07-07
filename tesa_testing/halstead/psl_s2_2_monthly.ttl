@@ -1,0 +1,44 @@
+@prefix :    <http://example.org/psl-app#> .
+@prefix psl:  <http://www.nist.gov/psl/core#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+# ============================================================
+# PSL - Scenario S2: TWO MONTHLY TRIGGERS
+# Same 12-predicate PSL machinery as S1.
+# ============================================================
+
+# --- Trigger 1: monthly Line1 maintenance, 1st @ 06:00 ---
+:MaintenanceActivity a psl:Activity ;
+    psl:activityName "MONTHLY_MAINTENANCE" ;
+    psl:isScheduled  true .
+:MaintenanceOccurrence a psl:ActivityOccurrence ;
+    psl:occurrenceOf :MaintenanceActivity ;
+    psl:hasTimepoint :MaintenanceTimepoint ;
+    psl:duration     "PT2H" ;
+    psl:priority     8 .
+:MaintenanceTimepoint a psl:Timepoint ;
+    psl:atTime     "---01T06:00:00" ;
+    psl:recurrence "MONTHLY" .
+:MaintenanceEffect a psl:State ;
+    psl:effectOf :MaintenanceActivity ;
+    psl:holds    :Line1Maintained .
+:MaintenanceConstraint a psl:Constraint ;
+    psl:constrains :MaintenanceOccurrence .
+
+# --- Trigger 2: monthly report, 15th @ 09:00 ---
+:ReportActivity a psl:Activity ;
+    psl:activityName "MONTHLY_REPORT" ;
+    psl:isScheduled  true .
+:ReportOccurrence a psl:ActivityOccurrence ;
+    psl:occurrenceOf :ReportActivity ;
+    psl:hasTimepoint :ReportTimepoint ;
+    psl:duration     "PT30M" ;
+    psl:priority     6 .
+:ReportTimepoint a psl:Timepoint ;
+    psl:atTime     "---15T09:00:00" ;
+    psl:recurrence "MONTHLY" .
+:ReportEffect a psl:State ;
+    psl:effectOf :ReportActivity ;
+    psl:holds    :ReportGenerated .
+:ReportConstraint a psl:Constraint ;
+    psl:constrains :ReportOccurrence .
