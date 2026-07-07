@@ -1,0 +1,212 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://example.org/tesa#"
+    xml:base="http://example.org/tesa"
+    xmlns:tesa="http://example.org/tesa#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:xml="http://www.w3.org/XML/1998/namespace"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+    xmlns:time="http://www.w3.org/2006/time#"
+    xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
+    xmlns:swrlx="http://www.w3.org/2003/11/swrlx#"
+    xmlns:terms="http://purl.org/dc/terms/">
+
+    <owl:Ontology rdf:about="http://example.org/tesa">
+        <owl:imports rdf:resource="http://www.w3.org/2006/time" />
+        <rdfs:comment>
+            Enabling Temporal Event-Driven Actions and Conflict Resolution in a Semantic Time ontology(TESA) for event-driven systems.
+            Core TESA Ontology constructs: TimeTrigger, Action, PriorityRelator, ConflictedActions.
+        </rdfs:comment>
+    </owl:Ontology>
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    <!-- http://www.w3.org/2000/01/rdf-schema#range -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2000/01/rdf-schema#range" />
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    <!-- http://example.org/tesa#conflictsWith -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/tesa#conflictsWith">
+        <rdfs:domain rdf:resource="http://example.org/tesa#Action" />
+        <rdfs:range rdf:resource="http://example.org/tesa#Action" />
+        <rdfs:comment>Indicates that two actions conflict if both occur simultaneously.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- http://example.org/tesa#hasAction -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/tesa#hasAction">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://example.org/tesa#ConflictedActions" />
+                    <rdf:Description rdf:about="http://example.org/tesa#TimeTrigger" />
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://example.org/tesa#Action" />
+    </owl:ObjectProperty>
+
+
+    <!-- http://example.org/tesa#hasCheckedIndicator -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/tesa#hasCheckedIndicator">
+        <rdfs:domain rdf:resource="http://example.org/tesa#Action" />
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://example.org/tesa#checkedIndicator" />
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#boolean" />
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:comment>Boolean indicating whether the action is checked by the rules to resolve conflicts automatically</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- http://example.org/tesa#hasExecuteIndicator -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/tesa#hasExecuteIndicator">
+        <rdfs:domain rdf:resource="http://example.org/tesa#Action" />
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://example.org/tesa#executeIndicator" />
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#boolean" />
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:comment>Boolean indicating whether the action is active/executed under a conflict
+            scenario.</rdfs:comment>
+    </owl:ObjectProperty>
+
+
+    <!-- http://example.org/tesa#hasPriorityRelator -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/tesa#hasPriorityRelator">
+        <rdfs:domain rdf:resource="http://example.org/tesa#Action" />
+        <rdfs:range rdf:resource="http://example.org/tesa#PriorityRelator" />
+    </owl:ObjectProperty>
+
+
+    <!-- http://example.org/tesa#validDuringInterval -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/tesa#validDuringInterval">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://example.org/tesa#Action" />
+                    <rdf:Description rdf:about="http://example.org/tesa#TimeTrigger" />
+                    <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#Thing" />
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://www.w3.org/2006/time#Interval" />
+    </owl:ObjectProperty>
+
+      <!-- Define object property to link to time description -->
+    <owl:ObjectProperty rdf:about="#hasTriggerTime">
+        <rdfs:domain rdf:resource="#TimeTrigger"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2006/time#GeneralDateTimeDescription"/>
+    </owl:ObjectProperty>
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    <!-- http://example.org/tesa#executeIndicator -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/tesa#executeIndicator">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean" />
+    </owl:DatatypeProperty>
+
+    <!-- http://example.org/tesa#checkedIndicator -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/tesa#checkedIndicator">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean" />
+    </owl:DatatypeProperty>
+
+
+    <!-- http://example.org/tesa#priorityValue -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/tesa#priorityValue">
+        <rdfs:domain rdf:resource="http://example.org/tesa#PriorityRelator" />
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#nonNegativeInteger" />
+    </owl:DatatypeProperty>
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    <!-- http://example.org/tesa#Action -->
+
+    <owl:Class rdf:about="http://example.org/tesa#Action">
+        <rdfs:comment>Represents the system behavior that occurs once a time trigger condition is
+            satisfied.</rdfs:comment>
+        <rdfs:label>Action</rdfs:label>
+    </owl:Class>
+
+
+    <!-- http://example.org/tesa#ConflictedActions -->
+
+    <owl:Class rdf:about="http://example.org/tesa#ConflictedActions">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://example.org/tesa#hasAction" />
+                <owl:minQualifiedCardinality
+                    rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+                <owl:onClass rdf:resource="http://example.org/tesa#Action" />
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment>Collects a set of actions that conflict when applied simultaneously.</rdfs:comment>
+        <rdfs:label>ConflictedActions</rdfs:label>
+    </owl:Class>
+
+    <!-- http://example.org/tesa#PriorityRelator -->
+
+    <owl:Class rdf:about="http://example.org/tesa#PriorityRelator">
+        <rdfs:comment>Assigns numeric or ordinal priority to actions or triggers for conflict
+            resolution.</rdfs:comment>
+        <rdfs:label>PriorityRelator</rdfs:label>
+    </owl:Class>
+
+
+    <!-- http://example.org/tesa#TimeTrigger -->
+
+    <owl:Class rdf:about="http://example.org/tesa#TimeTrigger">
+        <rdfs:comment>Represents a rule/directive that should take effect when one or more
+            time-based
+            conditions are met.</rdfs:comment>
+        <rdfs:label>TimeTrigger</rdfs:label>
+    </owl:Class>
+</rdf:RDF>
