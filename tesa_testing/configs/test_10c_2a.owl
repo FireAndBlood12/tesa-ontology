@@ -1,0 +1,173 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/factory_tesa#"
+     xml:base="http://www.semanticweb.org/factory_tesa"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+     xmlns:tesa="http://www.semanticweb.org/tesa#">
+
+    <owl:Ontology rdf:about="http://www.semanticweb.org/factory_tesa"/>
+
+    <swrl:Variable rdf:about="urn:swrl#a"/>
+
+    <owl:Class rdf:about="http://www.semanticweb.org/tesa#Action"/>
+    <owl:Class rdf:about="http://www.semanticweb.org/tesa#ConflictedActions"/>
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/tesa#hasAction"/>
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/tesa#priorityValue">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/tesa#executeIndicator">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    </owl:DatatypeProperty>
+
+    <swrl:Imp>
+        <swrl:body rdf:parseType="Collection">
+            <swrl:ClassAtom>
+                <swrl:classPredicate rdf:resource="http://www.semanticweb.org/tesa#Action"/>
+                <swrl:argument1 rdf:resource="urn:swrl#a"/>
+            </swrl:ClassAtom>
+        </swrl:body>
+        <swrl:head rdf:parseType="Collection">
+            <swrl:DatavaluedPropertyAtom>
+                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/tesa#executeIndicator"/>
+                <swrl:argument1 rdf:resource="urn:swrl#a"/>
+                <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl:argument2>
+            </swrl:DatavaluedPropertyAtom>
+        </swrl:head>
+    </swrl:Imp>
+
+    <tesa:Action rdf:about="#Boost_1">
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">27</tesa:priorityValue>
+    </tesa:Action>
+
+    <tesa:Action rdf:about="#Maintenance_2">
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">44</tesa:priorityValue>
+    </tesa:Action>
+
+    <tesa:ConflictedActions rdf:about="#Conflict_1">
+        <tesa:hasAction rdf:resource="#Boost_1"/>
+        <tesa:hasAction rdf:resource="#Maintenance_2"/>
+    </tesa:ConflictedActions>
+
+    <tesa:Action rdf:about="#Calibration_3">
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">61</tesa:priorityValue>
+    </tesa:Action>
+
+    <tesa:Action rdf:about="#Inspection_4">
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">78</tesa:priorityValue>
+    </tesa:Action>
+
+    <tesa:ConflictedActions rdf:about="#Conflict_2">
+        <tesa:hasAction rdf:resource="#Calibration_3"/>
+        <tesa:hasAction rdf:resource="#Inspection_4"/>
+    </tesa:ConflictedActions>
+
+    <tesa:Action rdf:about="#Adjustment_5">
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">95</tesa:priorityValue>
+    </tesa:Action>
+
+    <tesa:Action rdf:about="#Boost_6">
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">22</tesa:priorityValue>
+    </tesa:Action>
+
+    <tesa:ConflictedActions rdf:about="#Conflict_3">
+        <tesa:hasAction rdf:resource="#Adjustment_5"/>
+        <tesa:hasAction rdf:resource="#Boost_6"/>
+    </tesa:ConflictedActions>
+
+    <tesa:Action rdf:about="#Maintenance_7">
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">39</tesa:priorityValue>
+    </tesa:Action>
+
+    <tesa:Action rdf:about="#Calibration_8">
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">56</tesa:priorityValue>
+    </tesa:Action>
+
+    <tesa:ConflictedActions rdf:about="#Conflict_4">
+        <tesa:hasAction rdf:resource="#Maintenance_7"/>
+        <tesa:hasAction rdf:resource="#Calibration_8"/>
+    </tesa:ConflictedActions>
+
+    <tesa:Action rdf:about="#Inspection_9">
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">73</tesa:priorityValue>
+    </tesa:Action>
+
+    <tesa:Action rdf:about="#Adjustment_10">
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">90</tesa:priorityValue>
+    </tesa:Action>
+
+    <tesa:ConflictedActions rdf:about="#Conflict_5">
+        <tesa:hasAction rdf:resource="#Inspection_9"/>
+        <tesa:hasAction rdf:resource="#Adjustment_10"/>
+    </tesa:ConflictedActions>
+
+    <tesa:Action rdf:about="#Boost_11">
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">17</tesa:priorityValue>
+    </tesa:Action>
+
+    <tesa:Action rdf:about="#Maintenance_12">
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">34</tesa:priorityValue>
+    </tesa:Action>
+
+    <tesa:ConflictedActions rdf:about="#Conflict_6">
+        <tesa:hasAction rdf:resource="#Boost_11"/>
+        <tesa:hasAction rdf:resource="#Maintenance_12"/>
+    </tesa:ConflictedActions>
+
+    <tesa:Action rdf:about="#Calibration_13">
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">51</tesa:priorityValue>
+    </tesa:Action>
+
+    <tesa:Action rdf:about="#Inspection_14">
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">68</tesa:priorityValue>
+    </tesa:Action>
+
+    <tesa:ConflictedActions rdf:about="#Conflict_7">
+        <tesa:hasAction rdf:resource="#Calibration_13"/>
+        <tesa:hasAction rdf:resource="#Inspection_14"/>
+    </tesa:ConflictedActions>
+
+    <tesa:Action rdf:about="#Adjustment_15">
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">85</tesa:priorityValue>
+    </tesa:Action>
+
+    <tesa:Action rdf:about="#Boost_16">
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12</tesa:priorityValue>
+    </tesa:Action>
+
+    <tesa:ConflictedActions rdf:about="#Conflict_8">
+        <tesa:hasAction rdf:resource="#Adjustment_15"/>
+        <tesa:hasAction rdf:resource="#Boost_16"/>
+    </tesa:ConflictedActions>
+
+    <tesa:Action rdf:about="#Maintenance_17">
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">29</tesa:priorityValue>
+    </tesa:Action>
+
+    <tesa:Action rdf:about="#Calibration_18">
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">46</tesa:priorityValue>
+    </tesa:Action>
+
+    <tesa:ConflictedActions rdf:about="#Conflict_9">
+        <tesa:hasAction rdf:resource="#Maintenance_17"/>
+        <tesa:hasAction rdf:resource="#Calibration_18"/>
+    </tesa:ConflictedActions>
+
+    <tesa:Action rdf:about="#Inspection_19">
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">63</tesa:priorityValue>
+    </tesa:Action>
+
+    <tesa:Action rdf:about="#Adjustment_20">
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">80</tesa:priorityValue>
+    </tesa:Action>
+
+    <tesa:ConflictedActions rdf:about="#Conflict_10">
+        <tesa:hasAction rdf:resource="#Inspection_19"/>
+        <tesa:hasAction rdf:resource="#Adjustment_20"/>
+    </tesa:ConflictedActions>
+
+</rdf:RDF>

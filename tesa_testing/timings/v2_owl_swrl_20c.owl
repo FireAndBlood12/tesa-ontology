@@ -1,0 +1,693 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xml:base="http://www.semanticweb.org/owl_swrl_comparison"
+         xmlns="http://www.semanticweb.org/owl_swrl_comparison#"
+         xmlns:swrl="http://www.w3.org/2003/11/swrl#">
+
+<owl:Ontology rdf:about="http://www.semanticweb.org/owl_swrl_comparison"/>
+
+<owl:ObjectProperty rdf:about="#affectsMachine">
+  <rdfs:domain rdf:resource="#Action"/>
+  <rdfs:range rdf:resource="#Machine"/>
+</owl:ObjectProperty>
+
+<owl:DatatypeProperty rdf:about="#actionType">
+  <rdfs:domain rdf:resource="#Action"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#priorityValue">
+  <rdfs:domain rdf:resource="#Action"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+</owl:DatatypeProperty>
+
+<owl:Class rdf:about="#Machine">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Action">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+</owl:Class>
+
+<owl:Class rdf:about="#ActiveState">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  <owl:disjointWith rdf:resource="#StoppedState"/>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">State indicating active operation</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="#StoppedState">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">State indicating stopped operation</rdfs:comment>
+</owl:Class>
+
+<owl:NamedIndividual rdf:about="#Machine_1">
+  <rdf:type rdf:resource="#Machine"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StartAction_1">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_1"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">21</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StopAction_1">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_1"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">51</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Machine_2">
+  <rdf:type rdf:resource="#Machine"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StartAction_2">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_2"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">22</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StopAction_2">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_2"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">52</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Machine_3">
+  <rdf:type rdf:resource="#Machine"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StartAction_3">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_3"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">23</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StopAction_3">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_3"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">53</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Machine_4">
+  <rdf:type rdf:resource="#Machine"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StartAction_4">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_4"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">24</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StopAction_4">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_4"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">54</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Machine_5">
+  <rdf:type rdf:resource="#Machine"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StartAction_5">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_5"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">25</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StopAction_5">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_5"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">55</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Machine_6">
+  <rdf:type rdf:resource="#Machine"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StartAction_6">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_6"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">26</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StopAction_6">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_6"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">56</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Machine_7">
+  <rdf:type rdf:resource="#Machine"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StartAction_7">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_7"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">27</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StopAction_7">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_7"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">57</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Machine_8">
+  <rdf:type rdf:resource="#Machine"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StartAction_8">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_8"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">28</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StopAction_8">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_8"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">58</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Machine_9">
+  <rdf:type rdf:resource="#Machine"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StartAction_9">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_9"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">29</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StopAction_9">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_9"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">59</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Machine_10">
+  <rdf:type rdf:resource="#Machine"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StartAction_10">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_10"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StopAction_10">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_10"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">60</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Machine_11">
+  <rdf:type rdf:resource="#Machine"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StartAction_11">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_11"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">31</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StopAction_11">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_11"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">61</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Machine_12">
+  <rdf:type rdf:resource="#Machine"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StartAction_12">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_12"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">32</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StopAction_12">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_12"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">62</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Machine_13">
+  <rdf:type rdf:resource="#Machine"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StartAction_13">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_13"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">33</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StopAction_13">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_13"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">63</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Machine_14">
+  <rdf:type rdf:resource="#Machine"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StartAction_14">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_14"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">34</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StopAction_14">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_14"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">64</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Machine_15">
+  <rdf:type rdf:resource="#Machine"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StartAction_15">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_15"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">35</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StopAction_15">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_15"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">65</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Machine_16">
+  <rdf:type rdf:resource="#Machine"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StartAction_16">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_16"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">36</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StopAction_16">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_16"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">66</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Machine_17">
+  <rdf:type rdf:resource="#Machine"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StartAction_17">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_17"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">37</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StopAction_17">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_17"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">67</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Machine_18">
+  <rdf:type rdf:resource="#Machine"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StartAction_18">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_18"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">38</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StopAction_18">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_18"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">68</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Machine_19">
+  <rdf:type rdf:resource="#Machine"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StartAction_19">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_19"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">39</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StopAction_19">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_19"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">69</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Machine_20">
+  <rdf:type rdf:resource="#Machine"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StartAction_20">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_20"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</priorityValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#StopAction_20">
+  <rdf:type rdf:resource="#Action"/>
+  <affectsMachine rdf:resource="#Machine_20"/>
+  <actionType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</actionType>
+  <priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">70</priorityValue>
+</owl:NamedIndividual>
+
+<swrl:Variable rdf:about="urn:swrl#a"/>
+
+<swrl:Variable rdf:about="urn:swrl#m"/>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Action"/>
+          <swrl:argument1 rdf:resource="urn:swrl#a"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <rdf:Description>
+          <rdf:first>
+            <swrl:DatavaluedPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="#actionType"/>
+              <swrl:argument1 rdf:resource="urn:swrl#a"/>
+              <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</swrl:argument2>
+            </swrl:DatavaluedPropertyAtom>
+          </rdf:first>
+          <rdf:rest>
+            <rdf:Description>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="#affectsMachine"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#a"/>
+                  <swrl:argument2 rdf:resource="urn:swrl#m"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+          </rdf:rest>
+        </rdf:Description>
+      </rdf:rest>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#StoppedState"/>
+          <swrl:argument1 rdf:resource="urn:swrl#m"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Action"/>
+          <swrl:argument1 rdf:resource="urn:swrl#a"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <rdf:Description>
+          <rdf:first>
+            <swrl:DatavaluedPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="#actionType"/>
+              <swrl:argument1 rdf:resource="urn:swrl#a"/>
+              <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</swrl:argument2>
+            </swrl:DatavaluedPropertyAtom>
+          </rdf:first>
+          <rdf:rest>
+            <rdf:Description>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="#affectsMachine"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#a"/>
+                  <swrl:argument2 rdf:resource="urn:swrl#m"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+          </rdf:rest>
+        </rdf:Description>
+      </rdf:rest>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#ActiveState"/>
+          <swrl:argument1 rdf:resource="urn:swrl#m"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Action"/>
+          <swrl:argument1 rdf:resource="urn:swrl#a"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <rdf:Description>
+          <rdf:first>
+            <swrl:DatavaluedPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="#actionType"/>
+              <swrl:argument1 rdf:resource="urn:swrl#a"/>
+              <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</swrl:argument2>
+            </swrl:DatavaluedPropertyAtom>
+          </rdf:first>
+          <rdf:rest>
+            <rdf:Description>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="#affectsMachine"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#a"/>
+                  <swrl:argument2 rdf:resource="urn:swrl#m"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+          </rdf:rest>
+        </rdf:Description>
+      </rdf:rest>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#StoppedState"/>
+          <swrl:argument1 rdf:resource="urn:swrl#m"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Action"/>
+          <swrl:argument1 rdf:resource="urn:swrl#a"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <rdf:Description>
+          <rdf:first>
+            <swrl:DatavaluedPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="#actionType"/>
+              <swrl:argument1 rdf:resource="urn:swrl#a"/>
+              <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</swrl:argument2>
+            </swrl:DatavaluedPropertyAtom>
+          </rdf:first>
+          <rdf:rest>
+            <rdf:Description>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="#affectsMachine"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#a"/>
+                  <swrl:argument2 rdf:resource="urn:swrl#m"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+          </rdf:rest>
+        </rdf:Description>
+      </rdf:rest>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#ActiveState"/>
+          <swrl:argument1 rdf:resource="urn:swrl#m"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Action"/>
+          <swrl:argument1 rdf:resource="urn:swrl#a"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <rdf:Description>
+          <rdf:first>
+            <swrl:DatavaluedPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="#actionType"/>
+              <swrl:argument1 rdf:resource="urn:swrl#a"/>
+              <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#string">STOP</swrl:argument2>
+            </swrl:DatavaluedPropertyAtom>
+          </rdf:first>
+          <rdf:rest>
+            <rdf:Description>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="#affectsMachine"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#a"/>
+                  <swrl:argument2 rdf:resource="urn:swrl#m"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+          </rdf:rest>
+        </rdf:Description>
+      </rdf:rest>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#StoppedState"/>
+          <swrl:argument1 rdf:resource="urn:swrl#m"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Action"/>
+          <swrl:argument1 rdf:resource="urn:swrl#a"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <rdf:Description>
+          <rdf:first>
+            <swrl:DatavaluedPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="#actionType"/>
+              <swrl:argument1 rdf:resource="urn:swrl#a"/>
+              <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#string">START</swrl:argument2>
+            </swrl:DatavaluedPropertyAtom>
+          </rdf:first>
+          <rdf:rest>
+            <rdf:Description>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="#affectsMachine"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#a"/>
+                  <swrl:argument2 rdf:resource="urn:swrl#m"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+          </rdf:rest>
+        </rdf:Description>
+      </rdf:rest>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#ActiveState"/>
+          <swrl:argument1 rdf:resource="urn:swrl#m"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+
+</rdf:RDF>
