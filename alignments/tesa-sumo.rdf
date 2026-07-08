@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+  xmlns:tesa="http://example.org/tesa#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+>
+  <rdf:Description rdf:about="http://example.org/tesa#TimeTrigger">
+    <rdfs:subClassOf rdf:resource="http://www.ontologyportal.org/SUMO.owl#Procedure"/>
+    <skos:note xml:lang="en">SUMO Procedure is a sequence-of-instructions content class; a TESA trigger prescribes the initiation of actions under temporal conditions.</skos:note>
+  </rdf:Description>
+  <owl:Ontology rdf:about="http://example.org/tesa/align/sumo">
+    <owl:imports rdf:resource="http://example.org/tesa"/>
+    <rdfs:comment xml:lang="en">Bridge axioms aligning the TESA scheduling constructs with SUMO categories (OWL export).</rdfs:comment>
+  </owl:Ontology>
+  <rdf:Description rdf:about="http://example.org/tesa#PriorityRelator">
+    <rdfs:subClassOf rdf:resource="http://www.ontologyportal.org/SUMO.owl#RelationalAttribute"/>
+  </rdf:Description>
+  <tesa:ConflictedActions rdf:about="http://example.org/tesa#SUMOProbe_Group">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa#SUMOProbe_Action">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>SUMO alignment probe action</rdfs:label>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:ConflictedActions>
+  <rdf:Description rdf:about="http://www.w3.org/2006/time#Interval">
+    <rdfs:subClassOf rdf:resource="http://www.ontologyportal.org/SUMO.owl#TimeInterval"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2006/time#Instant">
+    <rdfs:subClassOf rdf:resource="http://www.ontologyportal.org/SUMO.owl#TimePoint"/>
+  </rdf:Description>
+  <owl:Class rdf:about="http://www.ontologyportal.org/SUMO.owl#Procedure">
+    <rdfs:label xml:lang="en">Procedure</rdfs:label>
+  </owl:Class>
+  <rdf:Description rdf:about="http://example.org/tesa#ConflictedActions">
+    <rdfs:subClassOf rdf:resource="http://www.ontologyportal.org/SUMO.owl#Collection"/>
+  </rdf:Description>
+  <owl:Class rdf:about="http://www.ontologyportal.org/SUMO.owl#TimePoint">
+    <rdfs:label xml:lang="en">TimePoint</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.ontologyportal.org/SUMO.owl#Process">
+    <rdfs:label xml:lang="en">Process</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.ontologyportal.org/SUMO.owl#Collection">
+    <rdfs:label xml:lang="en">Collection</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.ontologyportal.org/SUMO.owl#RelationalAttribute">
+    <rdfs:label xml:lang="en">RelationalAttribute</rdfs:label>
+  </owl:Class>
+  <rdf:Description rdf:about="http://example.org/tesa#Action">
+    <rdfs:subClassOf rdf:resource="http://www.ontologyportal.org/SUMO.owl#IntentionalProcess"/>
+  </rdf:Description>
+  <owl:Class rdf:about="http://www.ontologyportal.org/SUMO.owl#TimeInterval">
+    <rdfs:label xml:lang="en">TimeInterval</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.ontologyportal.org/SUMO.owl#IntentionalProcess">
+    <rdfs:subClassOf rdf:resource="http://www.ontologyportal.org/SUMO.owl#Process"/>
+  </owl:Class>
+</rdf:RDF>

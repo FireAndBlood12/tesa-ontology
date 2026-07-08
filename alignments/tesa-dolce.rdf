@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+  xmlns:tesa="http://example.org/tesa#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+>
+  <rdf:Description rdf:about="http://www.w3.org/2006/time#Interval">
+    <rdfs:subClassOf rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#TimeInterval"/>
+  </rdf:Description>
+  <owl:Ontology rdf:about="http://example.org/tesa/align/dolce">
+    <owl:imports rdf:resource="http://example.org/tesa"/>
+    <rdfs:comment xml:lang="en">Bridge axioms aligning the TESA scheduling constructs with DOLCE through DUL.</rdfs:comment>
+  </owl:Ontology>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa#DULProbe_Trigger">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>DUL alignment probe trigger</rdfs:label>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa#DULProbe_Action">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:TimeTrigger>
+  <rdf:Description rdf:about="http://example.org/tesa#PriorityRelator">
+    <rdfs:subClassOf rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Parameter"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/tesa#ConflictedActions">
+    <rdfs:subClassOf rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Collection"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/tesa#Action">
+    <rdfs:subClassOf rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Action"/>
+  </rdf:Description>
+  <owl:Class rdf:about="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#TimeInterval">
+    <rdfs:label xml:lang="en">TimeInterval</rdfs:label>
+  </owl:Class>
+  <rdf:Description rdf:about="http://example.org/tesa#TimeTrigger">
+    <rdfs:subClassOf rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Description"/>
+    <skos:note xml:lang="en">A trigger describes the conditions (time pattern + validity interval) that classify the situations in which the linked actions must run.</skos:note>
+  </rdf:Description>
+  <owl:Class rdf:about="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Description">
+    <rdfs:label xml:lang="en">Description</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Event">
+    <rdfs:label xml:lang="en">Event</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Action">
+    <rdfs:subClassOf rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Event"/>
+    <rdfs:label xml:lang="en">Action</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Parameter">
+    <rdfs:label xml:lang="en">Parameter</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Collection">
+    <rdfs:label xml:lang="en">Collection</rdfs:label>
+  </owl:Class>
+</rdf:RDF>

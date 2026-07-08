@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+  xmlns:tesa="http://example.org/tesa#"
+  xmlns:time="http://www.w3.org/2006/time#"
+>
+  <tesa:Action rdf:about="http://example.org/tesa#BFOProbe_Action">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>BFO alignment probe action</rdfs:label>
+    <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+    <tesa:validDuringInterval>
+      <time:Interval rdf:about="http://example.org/tesa#BFOProbe_Interval">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+      </time:Interval>
+    </tesa:validDuringInterval>
+  </tesa:Action>
+  <owl:Ontology rdf:about="http://example.org/tesa/align/bfo">
+    <owl:imports rdf:resource="http://example.org/tesa"/>
+    <rdfs:comment xml:lang="en">Bridge axioms aligning the TESA scheduling constructs with BFO 2.0 top-level categories.</rdfs:comment>
+  </owl:Ontology>
+  <rdf:Description rdf:about="http://www.w3.org/2006/time#Instant">
+    <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000008"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/tesa#TimeTrigger">
+    <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000031"/>
+    <skos:note xml:lang="en">Time-based directives are generically dependent continuants (information entities): the same trigger can be concretized in many digital twins.</skos:note>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/tesa#ConflictedActions">
+    <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000031"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/tesa#PriorityRelator">
+    <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000031"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/tesa#Action">
+    <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000015"/>
+    <skos:note xml:lang="en">TESA actions denote planned processes of the cyber-physical system; their realizations are BFO processes occupying a temporal region given by tesa:validDuringInterval.</skos:note>
+  </rdf:Description>
+  <owl:Class rdf:about="http://purl.obolibrary.org/obo/BFO_0000031">
+    <rdfs:label xml:lang="en">generically dependent continuant</rdfs:label>
+  </owl:Class>
+  <rdf:Description rdf:about="http://www.w3.org/2006/time#Interval">
+    <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000038"/>
+  </rdf:Description>
+  <owl:Class rdf:about="http://purl.obolibrary.org/obo/BFO_0000038">
+    <rdfs:label xml:lang="en">one-dimensional temporal region</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000008"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://purl.obolibrary.org/obo/BFO_0000008">
+    <rdfs:label xml:lang="en">temporal region</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="http://purl.obolibrary.org/obo/BFO_0000015">
+    <rdfs:label xml:lang="en">process</rdfs:label>
+  </owl:Class>
+</rdf:RDF>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+  xmlns:time="http://www.w3.org/2006/time#"
+  xmlns:tesa="http://example.org/tesa#"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/examples/owltime#TT_WeeklyMaintenance">
+    <rdfs:label>Every Friday 22:00 during the 2026 working year</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/examples/owltime#FridayNight">
+        <time:dayOfWeek rdf:resource="http://www.w3.org/2006/time#Friday"/>
+        <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">22</time:hour>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval>
+      <time:Interval rdf:about="http://example.org/tesa/examples/owltime#Iv2026Shift">
+        <rdfs:label>Working-year day-shift validity window</rdfs:label>
+        <time:hasBeginning rdf:resource="http://example.org/tesa/examples/owltime#Iv2026Shift_b"/>
+        <time:hasEnd rdf:resource="http://example.org/tesa/examples/owltime#Iv2026Shift_e"/>
+      </time:Interval>
+    </tesa:validDuringInterval>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/examples/owltime#A_WeeklyMaintenance">
+        <rdfs:label>Run weekly maintenance procedure</rdfs:label>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/examples/owltime#PR_High"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/examples/owltime#Iv2026Shift"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:TimeTrigger>
+  <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/examples/owltime#JulyPattern">
+    <time:monthOfYear rdf:resource="http://www.w3.org/ns/time/gregorian#July"/>
+    <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">0</time:hour>
+  </time:GeneralDateTimeDescription>
+  <time:Interval rdf:about="http://example.org/tesa/examples/owltime#IvJulyAudit">
+    <time:intervalDuring rdf:resource="http://example.org/tesa/examples/owltime#Iv2026Shift"/>
+  </time:Interval>
+  <owl:Ontology rdf:about="http://example.org/tesa/examples/owltime">
+    <owl:imports rdf:resource="http://example.org/tesa"/>
+    <rdfs:comment xml:lang="en">Canonical OWL-Time usage patterns of the TESA ontology (scenario S1 of the paper).</rdfs:comment>
+  </owl:Ontology>
+  <time:Instant rdf:about="http://example.org/tesa/examples/owltime#Iv2026Shift_e">
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-12-18T14:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <time:Instant rdf:about="http://example.org/tesa/examples/owltime#Iv2026Shift_b">
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-01-05T06:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <tesa:PriorityRelator rdf:about="http://example.org/tesa/examples/owltime#PR_High">
+    <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">8</tesa:priorityValue>
+  </tesa:PriorityRelator>
+</rdf:RDF>

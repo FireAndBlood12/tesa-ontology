@@ -131,15 +131,29 @@ def pellet_check(paths):
         return False
 
 def main():
-    print("== Level 0: syntax validation ==")
+    print("== Level 0: syntax validation + dual-format equivalence ==")
     graphs = {}
     for p in [CORE, ABOX] + MODULES:
         graphs[p] = load(p)
         print(f"  [OK] {os.path.relpath(p, ROOT)}: {len(graphs[p])} triples")
+    # Every ontology ships in both Turtle and RDF/XML; the two files of
+    # each pair must be graph-isomorphic (identical up to blank nodes).
+    from rdflib.compare import to_isomorphic
+    fmt_ok = True
+    for p in [CORE, ABOX] + MODULES:
+        twin = p[:-4] + (".ttl" if p.endswith(".rdf") else ".rdf")
+        if os.path.exists(twin):
+            iso = to_isomorphic(graphs[p]) == to_isomorphic(load(twin))
+            fmt_ok &= iso
+            print(f"  [{'OK' if iso else 'FAIL'}] {os.path.relpath(twin, ROOT)}"
+                  f" is isomorphic to its {p[-3:]} twin")
+        else:
+            fmt_ok = False
+            print(f"  [FAIL] missing twin serialization: {twin}")
 
     print("\n== Level 1a: structural checks on the car-factory ABox ==")
     base = graphs[CORE] + graphs[ABOX]
-    s_ok = structural_checks(base)
+    s_ok = structural_checks(base) and fmt_ok
 
     print("\n== Level 1b: OWL RL consistency, core + ABox + each module ==")
     all_ok = s_ok

@@ -1,0 +1,88 @@
+@prefix : <http://example.org/tesa#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/tesa> a owl:Ontology ;
+    rdfs:comment """
+            Enabling Temporal Event-Driven Actions and Conflict Resolution in a Semantic Time ontology(TESA) for event-driven systems.
+            Core TESA Ontology constructs: TimeTrigger, Action, PriorityRelator, ConflictedActions.
+        """ ;
+    owl:imports <http://www.w3.org/2006/time> .
+
+:conflictsWith a owl:ObjectProperty ;
+    rdfs:comment "Indicates that two actions conflict if both occur simultaneously." ;
+    rdfs:domain :Action ;
+    rdfs:range :Action .
+
+:hasCheckedIndicator a owl:ObjectProperty ;
+    rdfs:comment "Boolean indicating whether the action is checked by the rules to resolve conflicts automatically" ;
+    rdfs:domain :Action ;
+    rdfs:range [ a owl:Restriction ;
+            owl:onProperty :checkedIndicator ;
+            owl:someValuesFrom xsd:boolean ] .
+
+:hasExecuteIndicator a owl:ObjectProperty ;
+    rdfs:comment """Boolean indicating whether the action is active/executed under a conflict
+            scenario.""" ;
+    rdfs:domain :Action ;
+    rdfs:range [ a owl:Restriction ;
+            owl:onProperty :executeIndicator ;
+            owl:someValuesFrom xsd:boolean ] .
+
+:hasPriorityRelator a owl:ObjectProperty ;
+    rdfs:domain :Action ;
+    rdfs:range :PriorityRelator .
+
+:hasTriggerTime a owl:ObjectProperty ;
+    rdfs:domain :TimeTrigger ;
+    rdfs:range time:GeneralDateTimeDescription .
+
+:priorityValue a owl:DatatypeProperty ;
+    rdfs:domain :PriorityRelator ;
+    rdfs:range xsd:nonNegativeInteger .
+
+:validDuringInterval a owl:ObjectProperty ;
+    rdfs:domain [ a owl:Class ;
+            owl:unionOf ( :Action :TimeTrigger owl:Thing ) ] ;
+    rdfs:range time:Interval .
+
+rdfs:range a owl:AnnotationProperty .
+
+:ConflictedActions a owl:Class ;
+    rdfs:label "ConflictedActions" ;
+    rdfs:comment "Collects a set of actions that conflict when applied simultaneously." ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass :Action ;
+            owl:onProperty :hasAction ] .
+
+:checkedIndicator a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean .
+
+:executeIndicator a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean .
+
+:hasAction a owl:ObjectProperty ;
+    rdfs:domain [ a owl:Class ;
+            owl:unionOf ( :ConflictedActions :TimeTrigger ) ] ;
+    rdfs:range :Action .
+
+:PriorityRelator a owl:Class ;
+    rdfs:label "PriorityRelator" ;
+    rdfs:comment """Assigns numeric or ordinal priority to actions or triggers for conflict
+            resolution.""" .
+
+:TimeTrigger a owl:Class ;
+    rdfs:label "TimeTrigger" ;
+    rdfs:comment """Represents a rule/directive that should take effect when one or more
+            time-based
+            conditions are met.""" .
+
+:Action a owl:Class ;
+    rdfs:label "Action" ;
+    rdfs:comment """Represents the system behavior that occurs once a time trigger condition is
+            satisfied.""" .
+

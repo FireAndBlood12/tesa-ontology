@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+  xmlns:tesa="http://example.org/tesa#"
+  xmlns:gufo="http://purl.org/nemo/gufo#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+>
+  <owl:Ontology rdf:about="http://example.org/tesa/align/ufo">
+    <owl:imports rdf:resource="http://example.org/tesa"/>
+    <rdfs:comment xml:lang="en">Bridge axioms aligning the TESA scheduling constructs with UFO categories through gUFO.</rdfs:comment>
+  </owl:Ontology>
+  <tesa:Action rdf:about="http://example.org/tesa#UFOProbe_Action">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>UFO alignment probe action</rdfs:label>
+    <tesa:hasPriorityRelator>
+      <tesa:PriorityRelator rdf:about="http://example.org/tesa#UFOProbe_PR">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">9</tesa:priorityValue>
+      </tesa:PriorityRelator>
+    </tesa:hasPriorityRelator>
+    <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+  </tesa:Action>
+  <rdf:Description rdf:about="http://example.org/tesa#TimeTrigger">
+    <rdfs:subClassOf rdf:resource="http://purl.org/nemo/gufo#Situation"/>
+    <skos:note xml:lang="en">The satisfaction of a time trigger is a situation that brings about the associated events.</skos:note>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/tesa#ConflictedActions">
+    <rdfs:subClassOf rdf:resource="http://purl.org/nemo/gufo#Collection"/>
+  </rdf:Description>
+  <owl:Class rdf:about="http://purl.org/nemo/gufo#Event">
+    <rdfs:label xml:lang="en">Event</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="http://purl.org/nemo/gufo#Situation">
+    <rdfs:label xml:lang="en">Situation</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="http://purl.org/nemo/gufo#EventType">
+    <rdfs:label xml:lang="en">EventType</rdfs:label>
+  </owl:Class>
+  <rdf:Description rdf:about="http://example.org/tesa#PriorityRelator">
+    <rdfs:subClassOf rdf:resource="http://purl.org/nemo/gufo#Relator"/>
+    <skos:note xml:lang="en">A PriorityRelator mediates the priority ordering between conflicting actions, exactly matching the UFO notion of a relator.</skos:note>
+  </rdf:Description>
+  <gufo:EventType rdf:about="http://example.org/tesa#Action">
+    <rdfs:subClassOf rdf:resource="http://purl.org/nemo/gufo#Event"/>
+    <skos:note xml:lang="en">In gUFO, domain event classes are instances of gufo:EventType; TESA actions are the event type of scheduled system behaviors.</skos:note>
+  </gufo:EventType>
+  <owl:Class rdf:about="http://purl.org/nemo/gufo#Relator">
+    <rdfs:label xml:lang="en">Relator</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="http://purl.org/nemo/gufo#Collection">
+    <rdfs:label xml:lang="en">Collection</rdfs:label>
+  </owl:Class>
+</rdf:RDF>

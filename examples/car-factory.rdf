@@ -1,0 +1,1266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:cf="http://example.org/tesa/carfactory#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+  xmlns:time="http://www.w3.org/2006/time#"
+  xmlns:tesa="http://example.org/tesa#"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+>
+  <owl:Ontology rdf:about="http://example.org/tesa/carfactory">
+    <owl:imports rdf:resource="http://example.org/tesa"/>
+    <rdfs:comment xml:lang="en">Car factory test system for the TESA ontology: entity hierarchy, time triggers, actions, priorities and conflict groups.</rdfs:comment>
+  </owl:Ontology>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/carfactory#TT_DailyShiftStart_East">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Daily day-shift start at Plant East</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/carfactory#TT_DailyShiftStart_East_time">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">6</time:hour>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval>
+      <time:Interval rdf:about="http://example.org/tesa/carfactory#IV_Shift1_2026">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Day shift window, production year 2026</rdfs:label>
+        <time:hasBeginning rdf:resource="http://example.org/tesa/carfactory#IV_Shift1_2026_beg"/>
+        <time:hasEnd rdf:resource="http://example.org/tesa/carfactory#IV_Shift1_2026_end"/>
+      </time:Interval>
+    </tesa:validDuringInterval>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_StartConveyor_East">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Start main conveyor, Plant East</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#Plant_East"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_07"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_Shift1_2026"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:TimeTrigger>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/carfactory#TT_WeeklyMaintenance">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Weekly maintenance, Friday 22:00</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/carfactory#TT_WeeklyMaintenance_time">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:dayOfWeek rdf:resource="http://www.w3.org/2006/time#Friday"/>
+        <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">22</time:hour>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval>
+      <time:Interval rdf:about="http://example.org/tesa/carfactory#IV_MaintenanceWeekend">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>July maintenance weekend</rdfs:label>
+        <time:hasBeginning rdf:resource="http://example.org/tesa/carfactory#IV_MaintenanceWeekend_beg"/>
+        <time:hasEnd rdf:resource="http://example.org/tesa/carfactory#IV_MaintenanceWeekend_end"/>
+      </time:Interval>
+    </tesa:validDuringInterval>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_LockdownStations">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Lock down stations for maintenance</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#Plant_North"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_09"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_MaintenanceWeekend"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+        <tesa:conflictsWith rdf:resource="http://example.org/tesa/carfactory#A_ResumeProduction"/>
+      </tesa:Action>
+    </tesa:hasAction>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_LubricateConveyor">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Lubricate conveyor system</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#Plant_North"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_05"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_MaintenanceWeekend"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:TimeTrigger>
+  <tesa:ConflictedActions rdf:about="http://example.org/tesa/carfactory#CA_Changeover">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Line changeover vs keeping sedan output</rdfs:label>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_ChangeoverSedanToEV">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Change over Sedan line to EV</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#PL_East_Sedan"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_06"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_Changeover_Aug"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+        <tesa:conflictsWith rdf:resource="http://example.org/tesa/carfactory#A_KeepSedanOutput"/>
+        <tesa:conflictsWith rdf:resource="http://example.org/tesa/carfactory#A_HaltForChangeover"/>
+      </tesa:Action>
+    </tesa:hasAction>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_KeepSedanOutput">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Keep East Sedan output for backlog</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#PL_East_Sedan"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_02"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_Changeover_Aug"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+        <tesa:conflictsWith rdf:resource="http://example.org/tesa/carfactory#A_HaltForChangeover"/>
+      </tesa:Action>
+    </tesa:hasAction>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_HaltForChangeover">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Halt East Sedan output for changeover</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#PL_East_Sedan"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_06"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_Changeover_Aug"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:ConflictedActions>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/carfactory#TT_NightWindowStart">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Night window start</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/carfactory#TT_NightWindowStart_time">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">22</time:hour>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval>
+      <time:Interval rdf:about="http://example.org/tesa/carfactory#IV_NightWindow_2026">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Night window: charging and maintenance</rdfs:label>
+        <time:hasBeginning rdf:resource="http://example.org/tesa/carfactory#IV_NightWindow_2026_beg"/>
+        <time:hasEnd rdf:resource="http://example.org/tesa/carfactory#IV_NightWindow_2026_end"/>
+      </time:Interval>
+    </tesa:validDuringInterval>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_ChargeEVBatteries">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Charge EV battery packs</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#PL_North_EV"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_06"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_NightWindow_2026"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_StopConveyor_North">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Stop main conveyor, Plant North</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#Plant_North"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_08"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_NightWindow_2026"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_StopConveyor_East">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Stop main conveyor, Plant East</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#Plant_East"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_08"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_NightWindow_2026"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:TimeTrigger>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/carfactory#TT_QualitySampling">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Per-shift quality sampling</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/carfactory#TT_QualitySampling_time">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">12</time:hour>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_Shift1_2026"/>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_SampleQuality">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Sample per-shift product quality</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#Div_Quality"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_05"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_Shift1_2026"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:TimeTrigger>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/carfactory#TT_MonthlyAudit">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Monthly audit, first Monday 08:00</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/carfactory#TT_MonthlyAudit_time">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:dayOfWeek rdf:resource="http://www.w3.org/2006/time#Monday"/>
+        <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">8</time:hour>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval>
+      <time:Interval rdf:about="http://example.org/tesa/carfactory#IV_AuditWindow_Jul">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Monthly audit window, July</rdfs:label>
+        <time:hasBeginning rdf:resource="http://example.org/tesa/carfactory#IV_AuditWindow_Jul_beg"/>
+        <time:hasEnd rdf:resource="http://example.org/tesa/carfactory#IV_AuditWindow_Jul_end"/>
+      </time:Interval>
+    </tesa:validDuringInterval>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_AuditLine_NorthSedan">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Audit North Sedan line</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#PL_North_Sedan"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_05"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_AuditWindow_Jul"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:TimeTrigger>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/carfactory#TT_HolidayShutdown">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Holiday shutdown start (December)</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/carfactory#TT_HolidayShutdown_time">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:monthOfYear rdf:resource="http://www.w3.org/ns/time/gregorian#December"/>
+        <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">0</time:hour>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval>
+      <time:Interval rdf:about="http://example.org/tesa/carfactory#IV_HolidayShutdown">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Holiday shutdown</rdfs:label>
+        <time:hasBeginning rdf:resource="http://example.org/tesa/carfactory#IV_HolidayShutdown_beg"/>
+        <time:hasEnd rdf:resource="http://example.org/tesa/carfactory#IV_HolidayShutdown_end"/>
+      </time:Interval>
+    </tesa:validDuringInterval>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_ShutdownAllLines">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Shut down all lines for holidays</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#CC_Global"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_10"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_HolidayShutdown"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:TimeTrigger>
+  <tesa:ConflictedActions rdf:about="http://example.org/tesa/carfactory#CA_EnergyPeak">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Energy-peak reduction vs Q3 production boost vs overtime</rdfs:label>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_ReduceEnergyLoad">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Reduce energy load during grid peak</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#CC_Global"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_10"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_EnergyPeak"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+        <tesa:conflictsWith rdf:resource="http://example.org/tesa/carfactory#A_BoostProduction"/>
+        <tesa:conflictsWith rdf:resource="http://example.org/tesa/carfactory#A_OvertimeWindow"/>
+      </tesa:Action>
+    </tesa:hasAction>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_BoostProduction">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Boost production for Q3 targets</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#CC_Global"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_03"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_Q3_2026"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+        <tesa:conflictsWith rdf:resource="http://example.org/tesa/carfactory#A_OvertimeWindow"/>
+      </tesa:Action>
+    </tesa:hasAction>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_OvertimeWindow">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Open overtime window</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#Plant_East"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_02"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_Q3_2026"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:ConflictedActions>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/carfactory#TT_PaintSlotMorning">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Morning paint slot allocation</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/carfactory#TT_PaintSlotMorning_time">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">8</time:hour>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval>
+      <time:Interval rdf:about="http://example.org/tesa/carfactory#IV_PaintSlot_A">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Paint booth slot A</rdfs:label>
+        <time:hasBeginning rdf:resource="http://example.org/tesa/carfactory#IV_PaintSlot_A_beg"/>
+        <time:hasEnd rdf:resource="http://example.org/tesa/carfactory#IV_PaintSlot_A_end"/>
+      </time:Interval>
+    </tesa:validDuringInterval>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_PaintSedanBatch">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Paint sedan batch in shared booth</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#ST_North_Sedan_PNT"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_06"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_PaintSlot_A"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+        <tesa:conflictsWith rdf:resource="http://example.org/tesa/carfactory#A_PaintSUVBatch"/>
+        <tesa:conflictsWith rdf:resource="http://example.org/tesa/carfactory#A_PreheatPaintBooth"/>
+      </tesa:Action>
+    </tesa:hasAction>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_PaintSUVBatch">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Paint SUV batch in shared booth</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#ST_North_Sedan_PNT"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_04"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_PaintSlot_B"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+        <tesa:conflictsWith rdf:resource="http://example.org/tesa/carfactory#A_PreheatPaintBooth"/>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:TimeTrigger>
+  <tesa:ConflictedActions rdf:about="http://example.org/tesa/carfactory#CA_MaintenanceVsProduction">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Maintenance lockdown vs production resume</rdfs:label>
+    <tesa:hasAction rdf:resource="http://example.org/tesa/carfactory#A_LockdownStations"/>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_ResumeProduction">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Resume production after maintenance</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#Plant_North"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_07"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_Shift1_2026"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:ConflictedActions>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/carfactory#TT_DailyShiftStart_North">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Daily day-shift start at Plant North</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/carfactory#TT_DailyShiftStart_North_time">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">6</time:hour>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_Shift1_2026"/>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_StartConveyor_North">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Start main conveyor, Plant North</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#Plant_North"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_07"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_Shift1_2026"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+        <tesa:conflictsWith rdf:resource="http://example.org/tesa/carfactory#A_StopConveyor_North"/>
+      </tesa:Action>
+    </tesa:hasAction>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_ActivateWelding_North">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Activate welding cells, Plant North</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#ST_North_Sedan_WEL"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_06"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_Shift1_2026"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:TimeTrigger>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/carfactory#TT_SoftwareUpdate">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Firmware update, Saturday 02:00</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/carfactory#TT_SoftwareUpdate_time">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:dayOfWeek rdf:resource="http://www.w3.org/2006/time#Saturday"/>
+        <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</time:hour>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval>
+      <time:Interval rdf:about="http://example.org/tesa/carfactory#IV_FirmwareWindow">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Firmware update window</rdfs:label>
+        <time:hasBeginning rdf:resource="http://example.org/tesa/carfactory#IV_FirmwareWindow_beg"/>
+        <time:hasEnd rdf:resource="http://example.org/tesa/carfactory#IV_FirmwareWindow_end"/>
+      </time:Interval>
+    </tesa:validDuringInterval>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_UpdateRobotFirmware">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Update robot firmware</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#Plant_North"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_07"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_FirmwareWindow"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+        <tesa:conflictsWith rdf:resource="http://example.org/tesa/carfactory#A_RunDiagnostics"/>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:TimeTrigger>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/carfactory#TT_QuarterlyInventory">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Quarterly inventory, July 1st pattern</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/carfactory#TT_QuarterlyInventory_time">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:monthOfYear rdf:resource="http://www.w3.org/ns/time/gregorian#July"/>
+        <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">0</time:hour>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval>
+      <time:Interval rdf:about="http://example.org/tesa/carfactory#IV_Q3_2026">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Third quarter 2026</rdfs:label>
+        <time:hasBeginning rdf:resource="http://example.org/tesa/carfactory#IV_Q3_2026_beg"/>
+        <time:hasEnd rdf:resource="http://example.org/tesa/carfactory#IV_Q3_2026_end"/>
+      </time:Interval>
+    </tesa:validDuringInterval>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_RunInventory">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Run quarterly inventory</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#Div_Logistics"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_04"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_Q3_2026"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:TimeTrigger>
+  <owl:ObjectProperty rdf:about="http://example.org/tesa/carfactory#operatedBy">
+    <rdfs:domain rdf:resource="http://example.org/tesa/carfactory#Station"/>
+    <rdfs:range rdf:resource="http://example.org/tesa/carfactory#Robot"/>
+  </owl:ObjectProperty>
+  <tesa:ConflictedActions rdf:about="http://example.org/tesa/carfactory#CA_FirmwareVsDiagnostics">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Firmware update vs diagnostics in the same window</rdfs:label>
+    <tesa:hasAction rdf:resource="http://example.org/tesa/carfactory#A_UpdateRobotFirmware"/>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_RunDiagnostics">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Run robot diagnostics suite</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#Plant_North"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_04"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_DiagnosticsSlot"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:ConflictedActions>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/carfactory#TT_NightDiagnostics">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Night diagnostics run</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/carfactory#TT_NightDiagnostics_time">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</time:hour>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval>
+      <time:Interval rdf:about="http://example.org/tesa/carfactory#IV_DiagnosticsSlot">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Diagnostics slot (overlaps firmware window)</rdfs:label>
+        <time:hasBeginning rdf:resource="http://example.org/tesa/carfactory#IV_DiagnosticsSlot_beg"/>
+        <time:hasEnd rdf:resource="http://example.org/tesa/carfactory#IV_DiagnosticsSlot_end"/>
+      </time:Interval>
+    </tesa:validDuringInterval>
+    <tesa:hasAction rdf:resource="http://example.org/tesa/carfactory#A_RunDiagnostics"/>
+  </tesa:TimeTrigger>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/carfactory#TT_PaintVentilation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Paint booth ventilation check, hourly</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/carfactory#TT_PaintVentilation_time">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:minute rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</time:minute>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_Shift1_2026"/>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_VentilatePaintBooths">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Ventilate all paint booths</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#ST_North_Sedan_PNT"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_09"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_Shift1_2026"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:TimeTrigger>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/carfactory#TT_SafetyDrill">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Monthly safety drill</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/carfactory#TT_SafetyDrill_time">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">10</time:hour>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval>
+      <time:Interval rdf:about="http://example.org/tesa/carfactory#IV_SafetyDrill_Jul">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>July safety drill</rdfs:label>
+        <time:hasBeginning rdf:resource="http://example.org/tesa/carfactory#IV_SafetyDrill_Jul_beg"/>
+        <time:hasEnd rdf:resource="http://example.org/tesa/carfactory#IV_SafetyDrill_Jul_end"/>
+      </time:Interval>
+    </tesa:validDuringInterval>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_SafetyDrill">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Conduct safety drill</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#Plant_North"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_08"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_SafetyDrill_Jul"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:TimeTrigger>
+  <owl:ObjectProperty rdf:about="http://example.org/tesa/carfactory#partOf">
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="http://example.org/tesa/carfactory#hasPart">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:domain rdf:resource="http://example.org/tesa/carfactory#Facility"/>
+        <rdfs:comment xml:lang="en">Structural decomposition of the facility.</rdfs:comment>
+      </owl:ObjectProperty>
+    </owl:inverseOf>
+  </owl:ObjectProperty>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/carfactory#TT_DailyDispatch">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Daily logistics dispatch, 16:00</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/carfactory#TT_DailyDispatch_time">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">16</time:hour>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval>
+      <time:Interval rdf:about="http://example.org/tesa/carfactory#IV_DispatchDaily">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Daily dispatch window</rdfs:label>
+        <time:hasBeginning rdf:resource="http://example.org/tesa/carfactory#IV_DispatchDaily_beg"/>
+        <time:hasEnd rdf:resource="http://example.org/tesa/carfactory#IV_DispatchDaily_end"/>
+      </time:Interval>
+    </tesa:validDuringInterval>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_DispatchTrucks">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Dispatch finished-vehicle trucks</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#Div_Logistics"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_06"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_DispatchDaily"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:TimeTrigger>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/carfactory#TT_EnergyPeakStart">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Grid energy peak start</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/carfactory#TT_EnergyPeakStart_time">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">17</time:hour>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval>
+      <time:Interval rdf:about="http://example.org/tesa/carfactory#IV_EnergyPeak">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Grid energy peak window</rdfs:label>
+        <time:hasBeginning rdf:resource="http://example.org/tesa/carfactory#IV_EnergyPeak_beg"/>
+        <time:hasEnd rdf:resource="http://example.org/tesa/carfactory#IV_EnergyPeak_end"/>
+      </time:Interval>
+    </tesa:validDuringInterval>
+    <tesa:hasAction rdf:resource="http://example.org/tesa/carfactory#A_ReduceEnergyLoad"/>
+  </tesa:TimeTrigger>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/carfactory#TT_ProductionBoost">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Q3 production boost directive</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/carfactory#TT_ProductionBoost_time">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">9</time:hour>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_Q3_2026"/>
+    <tesa:hasAction rdf:resource="http://example.org/tesa/carfactory#A_BoostProduction"/>
+  </tesa:TimeTrigger>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/carfactory#TT_WeldingCalibration">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Welding calibration, Sunday 04:00</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/carfactory#TT_WeldingCalibration_time">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:dayOfWeek rdf:resource="http://www.w3.org/2006/time#Sunday"/>
+        <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">4</time:hour>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_MaintenanceWeekend"/>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_CalibrateWeldingRobots">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Calibrate welding robots</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#ST_North_Sedan_WEL"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_05"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_MaintenanceWeekend"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:TimeTrigger>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/carfactory#TT_EveningShiftStart">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Evening shift start, both plants</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/carfactory#TT_EveningShiftStart_time">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">14</time:hour>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval>
+      <time:Interval rdf:about="http://example.org/tesa/carfactory#IV_Shift2_2026">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Evening shift window</rdfs:label>
+        <time:hasBeginning rdf:resource="http://example.org/tesa/carfactory#IV_Shift2_2026_beg"/>
+        <time:hasEnd rdf:resource="http://example.org/tesa/carfactory#IV_Shift2_2026_end"/>
+      </time:Interval>
+    </tesa:validDuringInterval>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_RotateInspectors">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Rotate inspection personnel</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#Div_Quality"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_03"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_Shift2_2026"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:TimeTrigger>
+  <owl:ObjectProperty rdf:about="http://example.org/tesa/carfactory#appliesTo">
+    <rdfs:domain rdf:resource="http://example.org/tesa#Action"/>
+    <rdfs:range rdf:resource="http://example.org/tesa/carfactory#Facility"/>
+    <rdfs:comment xml:lang="en">Links a TESA action to the facility element it controls.</rdfs:comment>
+  </owl:ObjectProperty>
+  <tesa:ConflictedActions rdf:about="http://example.org/tesa/carfactory#CA_ConveyorState_North">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Conveyor start vs stop, Plant North</rdfs:label>
+    <tesa:hasAction rdf:resource="http://example.org/tesa/carfactory#A_StartConveyor_North"/>
+    <tesa:hasAction rdf:resource="http://example.org/tesa/carfactory#A_StopConveyor_North"/>
+  </tesa:ConflictedActions>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/carfactory#TT_SummerScheduleStart">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Summer schedule activation (June)</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/carfactory#TT_SummerScheduleStart_time">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:monthOfYear rdf:resource="http://www.w3.org/ns/time/gregorian#June"/>
+        <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">0</time:hour>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval>
+      <time:Interval rdf:about="http://example.org/tesa/carfactory#IV_SummerSchedule">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Summer schedule validity</rdfs:label>
+        <time:hasBeginning rdf:resource="http://example.org/tesa/carfactory#IV_SummerSchedule_beg"/>
+        <time:hasEnd rdf:resource="http://example.org/tesa/carfactory#IV_SummerSchedule_end"/>
+      </time:Interval>
+    </tesa:validDuringInterval>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_ApplySummerShifts">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Apply summer shift schedule</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#CC_Global"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_04"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_SummerSchedule"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:TimeTrigger>
+  <tesa:TimeTrigger rdf:about="http://example.org/tesa/carfactory#TT_LineChangeover">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Sedan-to-EV changeover start</rdfs:label>
+    <tesa:hasTriggerTime>
+      <time:GeneralDateTimeDescription rdf:about="http://example.org/tesa/carfactory#TT_LineChangeover_time">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:hour rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">6</time:hour>
+      </time:GeneralDateTimeDescription>
+    </tesa:hasTriggerTime>
+    <tesa:validDuringInterval>
+      <time:Interval rdf:about="http://example.org/tesa/carfactory#IV_Changeover_Aug">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Sedan-to-EV line changeover window</rdfs:label>
+        <time:hasBeginning rdf:resource="http://example.org/tesa/carfactory#IV_Changeover_Aug_beg"/>
+        <time:hasEnd rdf:resource="http://example.org/tesa/carfactory#IV_Changeover_Aug_end"/>
+      </time:Interval>
+    </tesa:validDuringInterval>
+    <tesa:hasAction rdf:resource="http://example.org/tesa/carfactory#A_ChangeoverSedanToEV"/>
+  </tesa:TimeTrigger>
+  <tesa:PriorityRelator rdf:about="http://example.org/tesa/carfactory#PR_01">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</tesa:priorityValue>
+    <rdfs:label>Priority level 1</rdfs:label>
+  </tesa:PriorityRelator>
+  <tesa:ConflictedActions rdf:about="http://example.org/tesa/carfactory#CA_PaintBoothContention">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Shared paint booth: sedan vs SUV batch vs pre-heat</rdfs:label>
+    <tesa:hasAction rdf:resource="http://example.org/tesa/carfactory#A_PaintSedanBatch"/>
+    <tesa:hasAction rdf:resource="http://example.org/tesa/carfactory#A_PaintSUVBatch"/>
+    <tesa:hasAction>
+      <tesa:Action rdf:about="http://example.org/tesa/carfactory#A_PreheatPaintBooth">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Pre-heat paint booth</rdfs:label>
+        <cf:appliesTo rdf:resource="http://example.org/tesa/carfactory#ST_North_Sedan_PNT"/>
+        <tesa:hasPriorityRelator rdf:resource="http://example.org/tesa/carfactory#PR_03"/>
+        <tesa:validDuringInterval rdf:resource="http://example.org/tesa/carfactory#IV_PaintSlot_A"/>
+        <tesa:executeIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:executeIndicator>
+        <tesa:checkedIndicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</tesa:checkedIndicator>
+      </tesa:Action>
+    </tesa:hasAction>
+  </tesa:ConflictedActions>
+  <cf:WeldingCell rdf:about="http://example.org/tesa/carfactory#ST_North_Sedan_WEL">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>ST North Sedan WEL</rdfs:label>
+    <cf:operatedBy>
+      <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_01">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Industrial robot RB_01</rdfs:label>
+      </cf:Robot>
+    </cf:operatedBy>
+    <cf:operatedBy>
+      <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_02">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Industrial robot RB_02</rdfs:label>
+      </cf:Robot>
+    </cf:operatedBy>
+  </cf:WeldingCell>
+  <tesa:PriorityRelator rdf:about="http://example.org/tesa/carfactory#PR_05">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">5</tesa:priorityValue>
+    <rdfs:label>Priority level 5</rdfs:label>
+  </tesa:PriorityRelator>
+  <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_24">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Industrial robot RB_24</rdfs:label>
+  </cf:Robot>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_HolidayShutdown_beg">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-12-24T00:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <cf:ProductionLine rdf:about="http://example.org/tesa/carfactory#PL_East_EV">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>PL East EV</rdfs:label>
+    <cf:hasPart>
+      <cf:WeldingCell rdf:about="http://example.org/tesa/carfactory#ST_East_EV_WEL">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>ST East EV WEL</rdfs:label>
+        <cf:operatedBy rdf:resource="http://example.org/tesa/carfactory#RB_25"/>
+        <cf:operatedBy rdf:resource="http://example.org/tesa/carfactory#RB_26"/>
+      </cf:WeldingCell>
+    </cf:hasPart>
+    <cf:hasPart>
+      <cf:PaintBooth rdf:about="http://example.org/tesa/carfactory#ST_East_EV_PNT">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>ST East EV PNT</rdfs:label>
+        <cf:operatedBy rdf:resource="http://example.org/tesa/carfactory#RB_27"/>
+      </cf:PaintBooth>
+    </cf:hasPart>
+  </cf:ProductionLine>
+  <cf:WeldingCell rdf:about="http://example.org/tesa/carfactory#ST_North_SUV_WEL">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>ST North SUV WEL</rdfs:label>
+    <cf:operatedBy>
+      <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_19">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Industrial robot RB_19</rdfs:label>
+      </cf:Robot>
+    </cf:operatedBy>
+    <cf:operatedBy>
+      <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_20">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Industrial robot RB_20</rdfs:label>
+      </cf:Robot>
+    </cf:operatedBy>
+  </cf:WeldingCell>
+  <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_13">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Industrial robot RB_13</rdfs:label>
+  </cf:Robot>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_SafetyDrill_Jul_beg">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-07-15T10:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_SummerSchedule_end">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-08-31T23:59:59Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_07">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Industrial robot RB_07</rdfs:label>
+  </cf:Robot>
+  <cf:ProductionLine rdf:about="http://example.org/tesa/carfactory#PL_North_SUV">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>PL North SUV</rdfs:label>
+    <cf:hasPart rdf:resource="http://example.org/tesa/carfactory#ST_North_SUV_WEL"/>
+    <cf:hasPart>
+      <cf:PaintBooth rdf:about="http://example.org/tesa/carfactory#ST_North_SUV_PNT">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>ST North SUV PNT</rdfs:label>
+        <cf:operatedBy rdf:resource="http://example.org/tesa/carfactory#RB_21"/>
+      </cf:PaintBooth>
+    </cf:hasPart>
+  </cf:ProductionLine>
+  <time:Interval rdf:about="http://example.org/tesa/carfactory#IV_PaintSlot_B">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Paint booth slot B (overlaps slot A)</rdfs:label>
+    <time:hasBeginning>
+      <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_PaintSlot_B_beg">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-07-07T08:00:00Z</time:inXSDDateTimeStamp>
+      </time:Instant>
+    </time:hasBeginning>
+    <time:hasEnd>
+      <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_PaintSlot_B_end">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-07-07T12:00:00Z</time:inXSDDateTimeStamp>
+      </time:Instant>
+    </time:hasEnd>
+  </time:Interval>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_MaintenanceWeekend_end">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-07-13T06:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <cf:Plant rdf:about="http://example.org/tesa/carfactory#Plant_North">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Plant North</rdfs:label>
+    <cf:hasPart>
+      <cf:ProductionLine rdf:about="http://example.org/tesa/carfactory#PL_North_Sedan">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>PL North Sedan</rdfs:label>
+        <cf:hasPart rdf:resource="http://example.org/tesa/carfactory#ST_North_Sedan_WEL"/>
+        <cf:hasPart rdf:resource="http://example.org/tesa/carfactory#ST_North_Sedan_PNT"/>
+        <cf:hasPart rdf:resource="http://example.org/tesa/carfactory#ST_North_Sedan_ASM"/>
+        <cf:hasPart rdf:resource="http://example.org/tesa/carfactory#ST_North_Sedan_INS"/>
+      </cf:ProductionLine>
+    </cf:hasPart>
+    <cf:hasPart rdf:resource="http://example.org/tesa/carfactory#PL_North_SUV"/>
+    <cf:hasPart>
+      <cf:ProductionLine rdf:about="http://example.org/tesa/carfactory#PL_North_EV">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>PL North EV</rdfs:label>
+        <cf:hasPart rdf:resource="http://example.org/tesa/carfactory#ST_North_EV_WEL"/>
+        <cf:hasPart rdf:resource="http://example.org/tesa/carfactory#ST_North_EV_PNT"/>
+        <cf:hasPart rdf:resource="http://example.org/tesa/carfactory#ST_North_EV_ASM"/>
+        <cf:hasPart rdf:resource="http://example.org/tesa/carfactory#ST_North_EV_INS"/>
+      </cf:ProductionLine>
+    </cf:hasPart>
+  </cf:Plant>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_NightWindow_2026_beg">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-01-05T22:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_08">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Industrial robot RB_08</rdfs:label>
+  </cf:Robot>
+  <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_12">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Industrial robot RB_12</rdfs:label>
+  </cf:Robot>
+  <tesa:PriorityRelator rdf:about="http://example.org/tesa/carfactory#PR_09">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">9</tesa:priorityValue>
+    <rdfs:label>Priority level 9</rdfs:label>
+  </tesa:PriorityRelator>
+  <cf:ProductionLine rdf:about="http://example.org/tesa/carfactory#PL_East_Sedan">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>PL East Sedan</rdfs:label>
+    <cf:hasPart>
+      <cf:WeldingCell rdf:about="http://example.org/tesa/carfactory#ST_East_Sedan_WEL">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>ST East Sedan WEL</rdfs:label>
+        <cf:operatedBy rdf:resource="http://example.org/tesa/carfactory#RB_22"/>
+        <cf:operatedBy rdf:resource="http://example.org/tesa/carfactory#RB_23"/>
+      </cf:WeldingCell>
+    </cf:hasPart>
+    <cf:hasPart>
+      <cf:PaintBooth rdf:about="http://example.org/tesa/carfactory#ST_East_Sedan_PNT">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>ST East Sedan PNT</rdfs:label>
+        <cf:operatedBy rdf:resource="http://example.org/tesa/carfactory#RB_24"/>
+      </cf:PaintBooth>
+    </cf:hasPart>
+  </cf:ProductionLine>
+  <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_11">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Industrial robot RB_11</rdfs:label>
+  </cf:Robot>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_Changeover_Aug_beg">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-08-15T06:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_SummerSchedule_beg">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-06-01T00:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_18">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Industrial robot RB_18</rdfs:label>
+  </cf:Robot>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_PaintSlot_A_beg">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-07-07T08:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_14">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Industrial robot RB_14</rdfs:label>
+  </cf:Robot>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_HolidayShutdown_end">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2027-01-02T06:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_27">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Industrial robot RB_27</rdfs:label>
+  </cf:Robot>
+  <cf:AssemblyStation rdf:about="http://example.org/tesa/carfactory#ST_North_EV_ASM">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>ST North EV ASM</rdfs:label>
+    <cf:operatedBy>
+      <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_10">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Industrial robot RB_10</rdfs:label>
+      </cf:Robot>
+    </cf:operatedBy>
+    <cf:operatedBy rdf:resource="http://example.org/tesa/carfactory#RB_11"/>
+  </cf:AssemblyStation>
+  <cf:CorporateCenter rdf:about="http://example.org/tesa/carfactory#CC_Global">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Global Corporate Center</rdfs:label>
+    <cf:hasPart>
+      <cf:Division rdf:about="http://example.org/tesa/carfactory#Div_Manufacturing">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Manufacturing Division</rdfs:label>
+        <cf:hasPart rdf:resource="http://example.org/tesa/carfactory#Plant_North"/>
+        <cf:hasPart rdf:resource="http://example.org/tesa/carfactory#Plant_East"/>
+      </cf:Division>
+    </cf:hasPart>
+    <cf:hasPart>
+      <cf:Division rdf:about="http://example.org/tesa/carfactory#Div_Quality">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Quality Assurance Division</rdfs:label>
+      </cf:Division>
+    </cf:hasPart>
+    <cf:hasPart>
+      <cf:Division rdf:about="http://example.org/tesa/carfactory#Div_Logistics">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Logistics Division</rdfs:label>
+      </cf:Division>
+    </cf:hasPart>
+  </cf:CorporateCenter>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_Q3_2026_beg">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-07-01T00:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_Shift2_2026_beg">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-01-05T14:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <cf:InspectionStation rdf:about="http://example.org/tesa/carfactory#ST_North_Sedan_INS">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>ST North Sedan INS</rdfs:label>
+    <cf:operatedBy>
+      <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_06">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Industrial robot RB_06</rdfs:label>
+      </cf:Robot>
+    </cf:operatedBy>
+  </cf:InspectionStation>
+  <cf:WeldingCell rdf:about="http://example.org/tesa/carfactory#ST_East_SUV_WEL">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>ST East SUV WEL</rdfs:label>
+    <cf:operatedBy rdf:resource="http://example.org/tesa/carfactory#RB_13"/>
+    <cf:operatedBy rdf:resource="http://example.org/tesa/carfactory#RB_14"/>
+  </cf:WeldingCell>
+  <cf:ProductionLine rdf:about="http://example.org/tesa/carfactory#PL_East_SUV">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>PL East SUV</rdfs:label>
+    <cf:hasPart rdf:resource="http://example.org/tesa/carfactory#ST_East_SUV_WEL"/>
+    <cf:hasPart>
+      <cf:PaintBooth rdf:about="http://example.org/tesa/carfactory#ST_East_SUV_PNT">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>ST East SUV PNT</rdfs:label>
+        <cf:operatedBy rdf:resource="http://example.org/tesa/carfactory#RB_15"/>
+      </cf:PaintBooth>
+    </cf:hasPart>
+    <cf:hasPart>
+      <cf:AssemblyStation rdf:about="http://example.org/tesa/carfactory#ST_East_SUV_ASM">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>ST East SUV ASM</rdfs:label>
+        <cf:operatedBy rdf:resource="http://example.org/tesa/carfactory#RB_16"/>
+        <cf:operatedBy rdf:resource="http://example.org/tesa/carfactory#RB_17"/>
+      </cf:AssemblyStation>
+    </cf:hasPart>
+    <cf:hasPart>
+      <cf:InspectionStation rdf:about="http://example.org/tesa/carfactory#ST_East_SUV_INS">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>ST East SUV INS</rdfs:label>
+        <cf:operatedBy rdf:resource="http://example.org/tesa/carfactory#RB_18"/>
+      </cf:InspectionStation>
+    </cf:hasPart>
+  </cf:ProductionLine>
+  <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_23">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Industrial robot RB_23</rdfs:label>
+  </cf:Robot>
+  <cf:Plant rdf:about="http://example.org/tesa/carfactory#Plant_East">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Plant East</rdfs:label>
+    <cf:hasPart rdf:resource="http://example.org/tesa/carfactory#PL_East_Sedan"/>
+    <cf:hasPart rdf:resource="http://example.org/tesa/carfactory#PL_East_SUV"/>
+    <cf:hasPart rdf:resource="http://example.org/tesa/carfactory#PL_East_EV"/>
+  </cf:Plant>
+  <tesa:PriorityRelator rdf:about="http://example.org/tesa/carfactory#PR_03">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">3</tesa:priorityValue>
+    <rdfs:label>Priority level 3</rdfs:label>
+  </tesa:PriorityRelator>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_Q3_2026_end">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-09-30T23:59:59Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <owl:Class rdf:about="http://example.org/tesa/carfactory#Robot">
+    <rdfs:subClassOf rdf:resource="http://example.org/tesa/carfactory#Equipment"/>
+  </owl:Class>
+  <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_25">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Industrial robot RB_25</rdfs:label>
+  </cf:Robot>
+  <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_16">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Industrial robot RB_16</rdfs:label>
+  </cf:Robot>
+  <cf:WeldingCell rdf:about="http://example.org/tesa/carfactory#ST_North_EV_WEL">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>ST North EV WEL</rdfs:label>
+    <cf:operatedBy rdf:resource="http://example.org/tesa/carfactory#RB_07"/>
+    <cf:operatedBy rdf:resource="http://example.org/tesa/carfactory#RB_08"/>
+  </cf:WeldingCell>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_Changeover_Aug_end">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-08-22T22:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <owl:Class rdf:about="http://example.org/tesa/carfactory#Division">
+    <rdfs:subClassOf rdf:resource="http://example.org/tesa/carfactory#Facility"/>
+  </owl:Class>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_DiagnosticsSlot_beg">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-07-11T02:30:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_DispatchDaily_end">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-07-07T18:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_22">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Industrial robot RB_22</rdfs:label>
+  </cf:Robot>
+  <tesa:PriorityRelator rdf:about="http://example.org/tesa/carfactory#PR_06">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">6</tesa:priorityValue>
+    <rdfs:label>Priority level 6</rdfs:label>
+  </tesa:PriorityRelator>
+  <tesa:PriorityRelator rdf:about="http://example.org/tesa/carfactory#PR_10">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">10</tesa:priorityValue>
+    <rdfs:label>Priority level 10</rdfs:label>
+  </tesa:PriorityRelator>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_MaintenanceWeekend_beg">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-07-10T22:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_26">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Industrial robot RB_26</rdfs:label>
+  </cf:Robot>
+  <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_21">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Industrial robot RB_21</rdfs:label>
+  </cf:Robot>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_Shift2_2026_end">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-12-18T22:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <cf:AssemblyStation rdf:about="http://example.org/tesa/carfactory#ST_North_Sedan_ASM">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>ST North Sedan ASM</rdfs:label>
+    <cf:operatedBy>
+      <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_04">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Industrial robot RB_04</rdfs:label>
+      </cf:Robot>
+    </cf:operatedBy>
+    <cf:operatedBy>
+      <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_05">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Industrial robot RB_05</rdfs:label>
+      </cf:Robot>
+    </cf:operatedBy>
+  </cf:AssemblyStation>
+  <cf:PaintBooth rdf:about="http://example.org/tesa/carfactory#ST_North_EV_PNT">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>ST North EV PNT</rdfs:label>
+    <cf:operatedBy>
+      <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_09">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <rdfs:label>Industrial robot RB_09</rdfs:label>
+      </cf:Robot>
+    </cf:operatedBy>
+  </cf:PaintBooth>
+  <tesa:PriorityRelator rdf:about="http://example.org/tesa/carfactory#PR_02">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</tesa:priorityValue>
+    <rdfs:label>Priority level 2</rdfs:label>
+  </tesa:PriorityRelator>
+  <owl:Class rdf:about="http://example.org/tesa/carfactory#InspectionStation">
+    <rdfs:subClassOf rdf:resource="http://example.org/tesa/carfactory#Station"/>
+  </owl:Class>
+  <tesa:PriorityRelator rdf:about="http://example.org/tesa/carfactory#PR_04">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">4</tesa:priorityValue>
+    <rdfs:label>Priority level 4</rdfs:label>
+  </tesa:PriorityRelator>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_PaintSlot_A_end">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-07-07T12:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_FirmwareWindow_beg">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-07-11T02:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_17">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Industrial robot RB_17</rdfs:label>
+  </cf:Robot>
+  <owl:Class rdf:about="http://example.org/tesa/carfactory#Station">
+    <rdfs:subClassOf rdf:resource="http://example.org/tesa/carfactory#Facility"/>
+  </owl:Class>
+  <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_15">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Industrial robot RB_15</rdfs:label>
+  </cf:Robot>
+  <owl:Class rdf:about="http://example.org/tesa/carfactory#PaintBooth">
+    <rdfs:subClassOf rdf:resource="http://example.org/tesa/carfactory#Station"/>
+  </owl:Class>
+  <cf:Robot rdf:about="http://example.org/tesa/carfactory#RB_03">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Industrial robot RB_03</rdfs:label>
+  </cf:Robot>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_NightWindow_2026_end">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-12-19T06:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <cf:PaintBooth rdf:about="http://example.org/tesa/carfactory#ST_North_Sedan_PNT">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>ST North Sedan PNT</rdfs:label>
+    <cf:operatedBy rdf:resource="http://example.org/tesa/carfactory#RB_03"/>
+  </cf:PaintBooth>
+  <owl:Class rdf:about="http://example.org/tesa/carfactory#WeldingCell">
+    <rdfs:subClassOf rdf:resource="http://example.org/tesa/carfactory#Station"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://example.org/tesa/carfactory#ProductionLine">
+    <rdfs:subClassOf rdf:resource="http://example.org/tesa/carfactory#Facility"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://example.org/tesa/carfactory#Plant">
+    <rdfs:subClassOf rdf:resource="http://example.org/tesa/carfactory#Facility"/>
+  </owl:Class>
+  <tesa:PriorityRelator rdf:about="http://example.org/tesa/carfactory#PR_07">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">7</tesa:priorityValue>
+    <rdfs:label>Priority level 7</rdfs:label>
+  </tesa:PriorityRelator>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_FirmwareWindow_end">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-07-11T05:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_SafetyDrill_Jul_end">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-07-15T11:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <tesa:PriorityRelator rdf:about="http://example.org/tesa/carfactory#PR_08">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <tesa:priorityValue rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">8</tesa:priorityValue>
+    <rdfs:label>Priority level 8</rdfs:label>
+  </tesa:PriorityRelator>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_AuditWindow_Jul_beg">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-07-06T08:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_Shift1_2026_end">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-12-18T14:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_EnergyPeak_end">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-07-01T21:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_EnergyPeak_beg">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-07-01T17:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <cf:InspectionStation rdf:about="http://example.org/tesa/carfactory#ST_North_EV_INS">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>ST North EV INS</rdfs:label>
+    <cf:operatedBy rdf:resource="http://example.org/tesa/carfactory#RB_12"/>
+  </cf:InspectionStation>
+  <owl:Class rdf:about="http://example.org/tesa/carfactory#AssemblyStation">
+    <rdfs:subClassOf rdf:resource="http://example.org/tesa/carfactory#Station"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://example.org/tesa/carfactory#CorporateCenter">
+    <rdfs:subClassOf rdf:resource="http://example.org/tesa/carfactory#Facility"/>
+  </owl:Class>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_Shift1_2026_beg">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-01-05T06:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_DispatchDaily_beg">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-07-07T16:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <owl:Class rdf:about="http://example.org/tesa/carfactory#Equipment"/>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_DiagnosticsSlot_end">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-07-11T04:30:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <time:Instant rdf:about="http://example.org/tesa/carfactory#IV_AuditWindow_Jul_end">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2026-07-06T18:00:00Z</time:inXSDDateTimeStamp>
+  </time:Instant>
+  <owl:Class rdf:about="http://example.org/tesa/carfactory#Facility">
+    <rdfs:label>Facility</rdfs:label>
+  </owl:Class>
+</rdf:RDF>
