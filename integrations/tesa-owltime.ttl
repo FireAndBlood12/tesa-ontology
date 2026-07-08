@@ -1,0 +1,81 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix greg: <http://www.w3.org/ns/time/gregorian#> .
+@prefix tesa: <http://example.org/tesa#> .
+@prefix ex:   <http://example.org/tesa/examples/owltime#> .
+
+#################################################################
+# TESA x OWL-Time integration example
+#
+# OWL-Time: TESA is defined as an extension of it (the core imports http://www.w3.org/2006/time).
+# This file shows the two canonical usage patterns from the paper:
+#
+#  P1. Absolute validity windows: tesa:validDuringInterval ->
+#      time:Interval with time:hasBeginning / time:hasEnd instants.
+#  P2. Recurring trigger patterns: tesa:hasTriggerTime ->
+#      time:GeneralDateTimeDescription (day-of-week, hour, month...),
+#      which is how "every Friday at 22:00" is expressed without
+#      enumerating dates.
+#################################################################
+
+<http://example.org/tesa/examples/owltime> a owl:Ontology ;
+    owl:imports <http://example.org/tesa> ;
+    rdfs:comment "Canonical OWL-Time usage patterns of the TESA ontology (scenario S1 of the paper)."@en .
+
+#################################################################
+# P1: absolute validity window (production year 2026)
+#################################################################
+
+ex:Iv2026Shift a time:Interval ;
+    rdfs:label "Working-year day-shift validity window" ;
+    time:hasBeginning ex:Iv2026Shift_b ;
+    time:hasEnd ex:Iv2026Shift_e .
+ex:Iv2026Shift_b a time:Instant ;
+    time:inXSDDateTimeStamp "2026-01-05T06:00:00Z"^^xsd:dateTimeStamp .
+ex:Iv2026Shift_e a time:Instant ;
+    time:inXSDDateTimeStamp "2026-12-18T14:00:00Z"^^xsd:dateTimeStamp .
+
+#################################################################
+# P2: recurring pattern "every Friday at 22:00" (scenario S1 —
+# weekly maintenance directive)
+#################################################################
+
+ex:FridayNight a time:GeneralDateTimeDescription ;
+    time:dayOfWeek time:Friday ;
+    time:hour "22"^^xsd:nonNegativeInteger .
+
+# Additional pattern: "July, 00:00" (quarterly rule).
+# NOTE: the day-of-month component (time:day, range xsd:gDay) is
+# deliberately omitted: the xsd:gDay lexical form "---01" is mishandled
+# by widely used toolchains (owlrl, owlready2), see ANALYSIS.md §7.
+ex:JulyPattern a time:GeneralDateTimeDescription ;
+    time:monthOfYear greg:July ;
+    time:hour "0"^^xsd:nonNegativeInteger .
+
+#################################################################
+# TESA constructs wired to the OWL-Time entities
+#################################################################
+
+ex:PR_High a tesa:PriorityRelator ;
+    tesa:priorityValue "8"^^xsd:nonNegativeInteger .
+
+ex:A_WeeklyMaintenance a tesa:Action ;
+    rdfs:label "Run weekly maintenance procedure" ;
+    tesa:hasPriorityRelator ex:PR_High ;
+    tesa:validDuringInterval ex:Iv2026Shift ;
+    tesa:executeIndicator "false"^^xsd:boolean .
+
+ex:TT_WeeklyMaintenance a tesa:TimeTrigger ;
+    rdfs:label "Every Friday 22:00 during the 2026 working year" ;
+    tesa:hasTriggerTime ex:FridayNight ;
+    tesa:validDuringInterval ex:Iv2026Shift ;
+    tesa:hasAction ex:A_WeeklyMaintenance .
+
+# Interval algebra is inherited for free from OWL-Time: standard
+# Allen relations can be asserted or inferred between TESA validity
+# intervals, e.g.:
+ex:IvJulyAudit a time:Interval ;
+    time:intervalDuring ex:Iv2026Shift .

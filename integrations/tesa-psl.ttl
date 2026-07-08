@@ -1,0 +1,106 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix tesa: <http://example.org/tesa#> .
+@prefix psl:  <http://www.mel.nist.gov/psl/psl-core#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ex:   <http://example.org/tesa/examples/psl#> .
+
+#################################################################
+# TESA x PSL (ISO 18629 Process Specification Language)
+#
+# This module does two things:
+#
+#  1. Declares an OWL rendering of the PSL-Core vocabulary needed
+#     for interchange (activity, activity_occurrence, timepoint),
+#     with the PSL-Core semantics summarized in comments.
+#  2. Provides bridge axioms and a worked example showing that a
+#     TESA schedule can be exported to / read from PSL-style data:
+#     a tesa:Action corresponds to a psl:activity, and each concrete
+#     execution of it to a psl:activity_occurrence bounded by
+#     psl:beginof / psl:endof timepoints.
+#
+# This mirrors the comparison methodology of the paper (Section 4.1),
+# where the same scenario is modeled in both TESA and PSL to compute
+# the Halstead effort metrics.
+#################################################################
+
+<http://example.org/tesa/integrations/psl> a owl:Ontology ;
+    owl:imports <http://example.org/tesa> ;
+    rdfs:comment "Interoperability module between TESA and an OWL rendering of PSL-Core (ISO 18629)."@en .
+
+#################################################################
+# OWL rendering of the PSL-Core vocabulary (interchange subset)
+#################################################################
+
+psl:Activity a owl:Class ;
+    rdfs:label "activity" ;
+    skos:note "PSL-Core: a repeatable pattern of behavior."@en .
+psl:ActivityOccurrence a owl:Class ;
+    rdfs:label "activity_occurrence" ;
+    skos:note "PSL-Core: a concrete, temporally bounded happening of an activity."@en .
+psl:Timepoint a owl:Class ;
+    rdfs:label "timepoint" .
+psl:occurrence_of a owl:ObjectProperty ;
+    rdfs:domain psl:ActivityOccurrence ; rdfs:range psl:Activity .
+psl:beginof a owl:ObjectProperty ;
+    rdfs:domain psl:ActivityOccurrence ; rdfs:range psl:Timepoint .
+psl:endof a owl:ObjectProperty ;
+    rdfs:domain psl:ActivityOccurrence ; rdfs:range psl:Timepoint .
+
+#################################################################
+# Bridge axioms
+#################################################################
+
+# Every TESA action is (exportable as) a PSL activity.
+tesa:Action rdfs:subClassOf psl:Activity .
+
+# OWL-Time instants used by TESA play the role of PSL timepoints.
+time:Instant rdfs:subClassOf psl:Timepoint .
+
+# Note the deliberate asymmetry: TESA triggers, priorities and
+# conflict groups have NO PSL counterpart — PSL-Core has no notion
+# of recurring time-based triggering or priority-based conflict
+# resolution. In PSL these must be encoded as bespoke first-order
+# axioms per schedule, which is exactly the source of the higher
+# Halstead effort measured in the paper.
+
+#################################################################
+# Worked example: scenario S1 in both representations
+#################################################################
+
+## --- TESA representation (3 individuals + 1 reusable pattern) ---
+ex:FridayNight a time:GeneralDateTimeDescription ;
+    time:dayOfWeek time:Friday ;
+    time:hour "22"^^xsd:nonNegativeInteger .
+ex:A_Maintenance a tesa:Action ;
+    rdfs:label "Weekly maintenance" ;
+    tesa:executeIndicator "false"^^xsd:boolean .
+ex:TT_Maintenance a tesa:TimeTrigger ;
+    tesa:hasTriggerTime ex:FridayNight ;
+    tesa:hasAction ex:A_Maintenance .
+
+## --- PSL-style export of ONE concrete week (must be repeated per
+## occurrence, since PSL-Core has no recurrence construct) ---
+ex:A_Maintenance_psl a psl:Activity ;
+    owl:sameAs ex:A_Maintenance .
+ex:Occ_2026w28 a psl:ActivityOccurrence ;
+    psl:occurrence_of ex:A_Maintenance_psl ;
+    psl:beginof ex:tp_2026_07_10_2200 ;
+    psl:endof   ex:tp_2026_07_11_0600 .
+ex:tp_2026_07_10_2200 a psl:Timepoint , time:Instant ;
+    time:inXSDDateTimeStamp "2026-07-10T22:00:00Z"^^xsd:dateTimeStamp .
+ex:tp_2026_07_11_0600 a psl:Timepoint , time:Instant ;
+    time:inXSDDateTimeStamp "2026-07-11T06:00:00Z"^^xsd:dateTimeStamp .
+
+ex:Occ_2026w29 a psl:ActivityOccurrence ;
+    psl:occurrence_of ex:A_Maintenance_psl ;
+    psl:beginof ex:tp_2026_07_17_2200 ;
+    psl:endof   ex:tp_2026_07_18_0600 .
+ex:tp_2026_07_17_2200 a psl:Timepoint , time:Instant ;
+    time:inXSDDateTimeStamp "2026-07-17T22:00:00Z"^^xsd:dateTimeStamp .
+ex:tp_2026_07_18_0600 a psl:Timepoint , time:Instant ;
+    time:inXSDDateTimeStamp "2026-07-18T06:00:00Z"^^xsd:dateTimeStamp .
+

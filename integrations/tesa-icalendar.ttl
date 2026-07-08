@@ -1,0 +1,87 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix tesa: <http://example.org/tesa#> .
+@prefix ical: <http://www.w3.org/2002/12/cal/ical#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ex:   <http://example.org/tesa/examples/ical#> .
+
+#################################################################
+# TESA x iCalendar (RFC 5545 via the W3C RDF Calendar vocabulary)
+#
+# iCalendar is the de-facto interchange format for human-facing
+# schedules. This module shows the round-trip pattern used to
+# publish TESA triggers to calendar systems (operator dashboards,
+# maintenance-crew calendars) and to ingest externally planned
+# events as TESA triggers.
+#
+# Key correspondence:
+#   tesa:TimeTrigger + time:GeneralDateTimeDescription
+#       <->  ical:Vevent + ical:rrule (recurrence rule)
+#   tesa:validDuringInterval boundaries
+#       <->  ical:dtstart / RRULE:...;UNTIL=...
+#
+# What does NOT survive the export: priorities and conflict groups.
+# iCalendar's PRIORITY property (0-9, lower = more urgent) is only
+# advisory and has no arbitration semantics, so the export maps
+# tesa:priorityValue onto ical:priority for display purposes, while
+# conflict resolution remains on the TESA side.
+#################################################################
+
+<http://example.org/tesa/integrations/ical> a owl:Ontology ;
+    owl:imports <http://example.org/tesa> ;
+    rdfs:comment "Round-trip interoperability module between TESA schedules and iCalendar (RDF Calendar / RFC 5545)."@en .
+
+#################################################################
+# Minimal RDF Calendar vocabulary referenced here (declared locally)
+#################################################################
+
+ical:Vevent a owl:Class .
+ical:Vcalendar a owl:Class .
+ical:summary a owl:DatatypeProperty .
+ical:dtstart a owl:DatatypeProperty .
+ical:dtend a owl:DatatypeProperty .
+ical:rrule a owl:DatatypeProperty .
+ical:priority a owl:DatatypeProperty .
+ical:component a owl:ObjectProperty ;
+    rdfs:domain ical:Vcalendar ; rdfs:range ical:Vevent .
+
+# Export link between the two worlds:
+tesa:hasICalExport a owl:ObjectProperty ;
+    rdfs:domain tesa:TimeTrigger ; rdfs:range ical:Vevent ;
+    rdfs:comment "Connects a TESA trigger to its published calendar representation."@en .
+
+#################################################################
+# Worked example: weekly maintenance trigger published to the
+# maintenance-crew calendar
+#################################################################
+
+## --- TESA side ---
+ex:FridayNight a time:GeneralDateTimeDescription ;
+    time:dayOfWeek time:Friday ;
+    time:hour "22"^^xsd:nonNegativeInteger .
+ex:PR_Maint a tesa:PriorityRelator ;
+    tesa:priorityValue "9"^^xsd:nonNegativeInteger .
+ex:A_Maintenance a tesa:Action ;
+    rdfs:label "Weekly maintenance lockdown" ;
+    tesa:hasPriorityRelator ex:PR_Maint ;
+    tesa:executeIndicator "false"^^xsd:boolean .
+ex:TT_Maintenance a tesa:TimeTrigger ;
+    rdfs:label "Weekly maintenance, Friday 22:00" ;
+    tesa:hasTriggerTime ex:FridayNight ;
+    tesa:hasAction ex:A_Maintenance ;
+    tesa:hasICalExport ex:EV_Maintenance .
+
+## --- iCalendar side (as consumed by any RFC 5545 client) ---
+ex:CrewCalendar a ical:Vcalendar ;
+    ical:component ex:EV_Maintenance .
+ex:EV_Maintenance a ical:Vevent ;
+    ical:summary "Plant maintenance lockdown (auto-published from TESA)" ;
+    ical:dtstart "2026-01-09T22:00:00Z"^^xsd:dateTime ;
+    ical:dtend   "2026-01-10T06:00:00Z"^^xsd:dateTime ;
+    ical:rrule   "FREQ=WEEKLY;BYDAY=FR;UNTIL=20261218T220000Z" ;
+    # RFC 5545 PRIORITY: 1 = highest. TESA priority 9 of 10 maps to 2.
+    ical:priority "2"^^xsd:integer ;
+    skos:note "Advisory only: arbitration between conflicting events is performed by the TESA priority mechanism, not by the calendar."@en .
