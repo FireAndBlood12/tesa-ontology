@@ -1,0 +1,69 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix tesa: <http://example.org/tesa#> .
+@prefix gufo: <http://purl.org/nemo/gufo#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+#################################################################
+# TESA -> UFO alignment module (via gUFO, the OWL rendering of
+# the Unified Foundational Ontology)
+#
+# UFO is specified in first-order logic; gUFO is its lightweight
+# OWL 2 DL implementation, which makes it the practical target
+# for OWL-level alignment. The mapping is purely additive.
+#
+# Conceptually the closest fit in the whole alignment set:
+# tesa:PriorityRelator is a UFO *relator* by design
+# i.e. an entity that mediates a relation between
+# actions by conferring a priority ordering on them.
+#################################################################
+
+<http://example.org/tesa/align/ufo> a owl:Ontology ;
+    owl:imports <http://example.org/tesa> ;
+    owl:imports <http://purl.org/nemo/gufo> ;
+    rdfs:comment "Bridge axioms aligning the TESA scheduling constructs with UFO categories through gUFO."@en .
+
+### Local declarations of the referenced gUFO classes (self-containment)
+gufo:Event a owl:Class ; rdfs:label "Event"@en .
+gufo:Relator a owl:Class ; rdfs:label "Relator"@en .
+gufo:Situation a owl:Class ; rdfs:label "Situation"@en .
+gufo:Collection a owl:Class ; rdfs:label "Collection"@en .
+gufo:EventType a owl:Class ; rdfs:label "EventType"@en .
+
+#################################################################
+# Bridge axioms
+#################################################################
+
+# Executed TESA actions are UFO events (perdurants).
+tesa:Action rdfs:subClassOf gufo:Event .
+tesa:Action rdf:type gufo:EventType ;
+    skos:note "In gUFO, domain event classes are instances of gufo:EventType; TESA actions are the event type of scheduled system behaviors."@en .
+
+# The priority relator is a textbook UFO relator: it existentially
+# depends on the actions it relates and grounds the material
+# relation 'has higher priority than'.
+tesa:PriorityRelator rdfs:subClassOf gufo:Relator ;
+    skos:note "A PriorityRelator mediates the priority ordering between conflicting actions, exactly matching the UFO notion of a relator."@en .
+
+# A fired trigger corresponds to a UFO situation: a state of the
+# world (time-point inside the validity interval, condition met)
+# that activates actions.
+tesa:TimeTrigger rdfs:subClassOf gufo:Situation ;
+    skos:note "The satisfaction of a time trigger is a situation that brings about the associated events."@en .
+
+# A conflict group is a collection whose members are actions.
+tesa:ConflictedActions rdfs:subClassOf gufo:Collection .
+
+#################################################################
+# Consistency probe
+#################################################################
+
+tesa:UFOProbe_PR a tesa:PriorityRelator , owl:NamedIndividual ;
+    tesa:priorityValue "9"^^xsd:nonNegativeInteger .
+tesa:UFOProbe_Action a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "UFO alignment probe action" ;
+    tesa:hasPriorityRelator tesa:UFOProbe_PR ;
+    tesa:executeIndicator "false"^^xsd:boolean .

@@ -1,0 +1,956 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix tesa: <http://example.org/tesa#> .
+@prefix cf:   <http://example.org/tesa/carfactory#> .
+
+#################################################################
+# TESA test system: car manufacturing facility
+# Domain ABox used in the paper's experiments (Section 3.1).
+# Six semantic levels: CorporateCenter > Division > Plant >
+# ProductionLine > Station > Robot.
+# All scheduling logic is expressed with the TESA constructs:
+# tesa:TimeTrigger, tesa:Action, tesa:PriorityRelator,
+# tesa:ConflictedActions.
+#################################################################
+
+<http://example.org/tesa/carfactory> a owl:Ontology ;
+    owl:imports <http://example.org/tesa> ;
+    rdfs:comment "Car factory test system for the TESA ontology: entity hierarchy, time triggers, actions, priorities and conflict groups."@en .
+
+#################################################################
+# Minimal System Domain TBox (entity model of the test system)
+#################################################################
+
+cf:Facility a owl:Class ; rdfs:label "Facility" .
+cf:CorporateCenter a owl:Class ; rdfs:subClassOf cf:Facility .
+cf:Division a owl:Class ; rdfs:subClassOf cf:Facility .
+cf:Plant a owl:Class ; rdfs:subClassOf cf:Facility .
+cf:ProductionLine a owl:Class ; rdfs:subClassOf cf:Facility .
+cf:Station a owl:Class ; rdfs:subClassOf cf:Facility .
+cf:WeldingCell a owl:Class ; rdfs:subClassOf cf:Station .
+cf:PaintBooth a owl:Class ; rdfs:subClassOf cf:Station .
+cf:AssemblyStation a owl:Class ; rdfs:subClassOf cf:Station .
+cf:InspectionStation a owl:Class ; rdfs:subClassOf cf:Station .
+cf:Equipment a owl:Class .
+cf:Robot a owl:Class ; rdfs:subClassOf cf:Equipment .
+
+cf:hasPart a owl:ObjectProperty , owl:TransitiveProperty ;
+    rdfs:domain cf:Facility ; rdfs:comment "Structural decomposition of the facility."@en .
+cf:partOf a owl:ObjectProperty ; owl:inverseOf cf:hasPart .
+cf:operatedBy a owl:ObjectProperty ;
+    rdfs:domain cf:Station ; rdfs:range cf:Robot .
+cf:appliesTo a owl:ObjectProperty ;
+    rdfs:domain tesa:Action ; rdfs:range cf:Facility ;
+    rdfs:comment "Links a TESA action to the facility element it controls."@en .
+
+#################################################################
+# Entity hierarchy (levels 1-6)
+#################################################################
+
+cf:CC_Global a cf:CorporateCenter , owl:NamedIndividual ;
+    rdfs:label "Global Corporate Center" ;
+    cf:hasPart cf:Div_Manufacturing , cf:Div_Quality , cf:Div_Logistics .
+
+cf:Div_Manufacturing a cf:Division , owl:NamedIndividual ;
+    rdfs:label "Manufacturing Division" ;
+    cf:hasPart cf:Plant_North , cf:Plant_East .
+
+cf:Div_Quality a cf:Division , owl:NamedIndividual ;
+    rdfs:label "Quality Assurance Division" .
+
+cf:Div_Logistics a cf:Division , owl:NamedIndividual ;
+    rdfs:label "Logistics Division" .
+
+cf:Plant_North a cf:Plant , owl:NamedIndividual ;
+    rdfs:label "Plant North" ;
+    cf:hasPart cf:PL_North_Sedan , cf:PL_North_SUV , cf:PL_North_EV .
+
+cf:Plant_East a cf:Plant , owl:NamedIndividual ;
+    rdfs:label "Plant East" ;
+    cf:hasPart cf:PL_East_Sedan , cf:PL_East_SUV , cf:PL_East_EV .
+
+cf:PL_North_Sedan a cf:ProductionLine , owl:NamedIndividual ;
+    rdfs:label "PL North Sedan" ;
+    cf:hasPart cf:ST_North_Sedan_WEL , cf:ST_North_Sedan_PNT , cf:ST_North_Sedan_ASM , cf:ST_North_Sedan_INS .
+
+cf:PL_North_EV a cf:ProductionLine , owl:NamedIndividual ;
+    rdfs:label "PL North EV" ;
+    cf:hasPart cf:ST_North_EV_WEL , cf:ST_North_EV_PNT , cf:ST_North_EV_ASM , cf:ST_North_EV_INS .
+
+cf:PL_East_SUV a cf:ProductionLine , owl:NamedIndividual ;
+    rdfs:label "PL East SUV" ;
+    cf:hasPart cf:ST_East_SUV_WEL , cf:ST_East_SUV_PNT , cf:ST_East_SUV_ASM , cf:ST_East_SUV_INS .
+
+cf:PL_North_SUV a cf:ProductionLine , owl:NamedIndividual ;
+    rdfs:label "PL North SUV" ;
+    cf:hasPart cf:ST_North_SUV_WEL , cf:ST_North_SUV_PNT .
+
+cf:PL_East_Sedan a cf:ProductionLine , owl:NamedIndividual ;
+    rdfs:label "PL East Sedan" ;
+    cf:hasPart cf:ST_East_Sedan_WEL , cf:ST_East_Sedan_PNT .
+
+cf:PL_East_EV a cf:ProductionLine , owl:NamedIndividual ;
+    rdfs:label "PL East EV" ;
+    cf:hasPart cf:ST_East_EV_WEL , cf:ST_East_EV_PNT .
+
+cf:ST_North_Sedan_WEL a cf:WeldingCell , owl:NamedIndividual ;
+    rdfs:label "ST North Sedan WEL" ;
+    cf:operatedBy cf:RB_01 , cf:RB_02 .
+
+cf:RB_01 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_01" .
+
+cf:RB_02 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_02" .
+
+cf:ST_North_Sedan_PNT a cf:PaintBooth , owl:NamedIndividual ;
+    rdfs:label "ST North Sedan PNT" ;
+    cf:operatedBy cf:RB_03 .
+
+cf:RB_03 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_03" .
+
+cf:ST_North_Sedan_ASM a cf:AssemblyStation , owl:NamedIndividual ;
+    rdfs:label "ST North Sedan ASM" ;
+    cf:operatedBy cf:RB_04 , cf:RB_05 .
+
+cf:RB_04 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_04" .
+
+cf:RB_05 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_05" .
+
+cf:ST_North_Sedan_INS a cf:InspectionStation , owl:NamedIndividual ;
+    rdfs:label "ST North Sedan INS" ;
+    cf:operatedBy cf:RB_06 .
+
+cf:RB_06 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_06" .
+
+cf:ST_North_EV_WEL a cf:WeldingCell , owl:NamedIndividual ;
+    rdfs:label "ST North EV WEL" ;
+    cf:operatedBy cf:RB_07 , cf:RB_08 .
+
+cf:RB_07 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_07" .
+
+cf:RB_08 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_08" .
+
+cf:ST_North_EV_PNT a cf:PaintBooth , owl:NamedIndividual ;
+    rdfs:label "ST North EV PNT" ;
+    cf:operatedBy cf:RB_09 .
+
+cf:RB_09 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_09" .
+
+cf:ST_North_EV_ASM a cf:AssemblyStation , owl:NamedIndividual ;
+    rdfs:label "ST North EV ASM" ;
+    cf:operatedBy cf:RB_10 , cf:RB_11 .
+
+cf:RB_10 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_10" .
+
+cf:RB_11 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_11" .
+
+cf:ST_North_EV_INS a cf:InspectionStation , owl:NamedIndividual ;
+    rdfs:label "ST North EV INS" ;
+    cf:operatedBy cf:RB_12 .
+
+cf:RB_12 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_12" .
+
+cf:ST_East_SUV_WEL a cf:WeldingCell , owl:NamedIndividual ;
+    rdfs:label "ST East SUV WEL" ;
+    cf:operatedBy cf:RB_13 , cf:RB_14 .
+
+cf:RB_13 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_13" .
+
+cf:RB_14 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_14" .
+
+cf:ST_East_SUV_PNT a cf:PaintBooth , owl:NamedIndividual ;
+    rdfs:label "ST East SUV PNT" ;
+    cf:operatedBy cf:RB_15 .
+
+cf:RB_15 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_15" .
+
+cf:ST_East_SUV_ASM a cf:AssemblyStation , owl:NamedIndividual ;
+    rdfs:label "ST East SUV ASM" ;
+    cf:operatedBy cf:RB_16 , cf:RB_17 .
+
+cf:RB_16 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_16" .
+
+cf:RB_17 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_17" .
+
+cf:ST_East_SUV_INS a cf:InspectionStation , owl:NamedIndividual ;
+    rdfs:label "ST East SUV INS" ;
+    cf:operatedBy cf:RB_18 .
+
+cf:RB_18 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_18" .
+
+cf:ST_North_SUV_WEL a cf:WeldingCell , owl:NamedIndividual ;
+    rdfs:label "ST North SUV WEL" ;
+    cf:operatedBy cf:RB_19 , cf:RB_20 .
+
+cf:RB_19 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_19" .
+
+cf:RB_20 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_20" .
+
+cf:ST_North_SUV_PNT a cf:PaintBooth , owl:NamedIndividual ;
+    rdfs:label "ST North SUV PNT" ;
+    cf:operatedBy cf:RB_21 .
+
+cf:RB_21 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_21" .
+
+cf:ST_East_Sedan_WEL a cf:WeldingCell , owl:NamedIndividual ;
+    rdfs:label "ST East Sedan WEL" ;
+    cf:operatedBy cf:RB_22 , cf:RB_23 .
+
+cf:RB_22 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_22" .
+
+cf:RB_23 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_23" .
+
+cf:ST_East_Sedan_PNT a cf:PaintBooth , owl:NamedIndividual ;
+    rdfs:label "ST East Sedan PNT" ;
+    cf:operatedBy cf:RB_24 .
+
+cf:RB_24 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_24" .
+
+cf:ST_East_EV_WEL a cf:WeldingCell , owl:NamedIndividual ;
+    rdfs:label "ST East EV WEL" ;
+    cf:operatedBy cf:RB_25 , cf:RB_26 .
+
+cf:RB_25 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_25" .
+
+cf:RB_26 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_26" .
+
+cf:ST_East_EV_PNT a cf:PaintBooth , owl:NamedIndividual ;
+    rdfs:label "ST East EV PNT" ;
+    cf:operatedBy cf:RB_27 .
+
+cf:RB_27 a cf:Robot , owl:NamedIndividual ;
+    rdfs:label "Industrial robot RB_27" .
+
+#################################################################
+# Priority relators (tesa:PriorityRelator)
+#################################################################
+
+cf:PR_01 a tesa:PriorityRelator , owl:NamedIndividual ;
+    tesa:priorityValue "1"^^xsd:nonNegativeInteger ;
+    rdfs:label "Priority level 1" .
+
+cf:PR_02 a tesa:PriorityRelator , owl:NamedIndividual ;
+    tesa:priorityValue "2"^^xsd:nonNegativeInteger ;
+    rdfs:label "Priority level 2" .
+
+cf:PR_03 a tesa:PriorityRelator , owl:NamedIndividual ;
+    tesa:priorityValue "3"^^xsd:nonNegativeInteger ;
+    rdfs:label "Priority level 3" .
+
+cf:PR_04 a tesa:PriorityRelator , owl:NamedIndividual ;
+    tesa:priorityValue "4"^^xsd:nonNegativeInteger ;
+    rdfs:label "Priority level 4" .
+
+cf:PR_05 a tesa:PriorityRelator , owl:NamedIndividual ;
+    tesa:priorityValue "5"^^xsd:nonNegativeInteger ;
+    rdfs:label "Priority level 5" .
+
+cf:PR_06 a tesa:PriorityRelator , owl:NamedIndividual ;
+    tesa:priorityValue "6"^^xsd:nonNegativeInteger ;
+    rdfs:label "Priority level 6" .
+
+cf:PR_07 a tesa:PriorityRelator , owl:NamedIndividual ;
+    tesa:priorityValue "7"^^xsd:nonNegativeInteger ;
+    rdfs:label "Priority level 7" .
+
+cf:PR_08 a tesa:PriorityRelator , owl:NamedIndividual ;
+    tesa:priorityValue "8"^^xsd:nonNegativeInteger ;
+    rdfs:label "Priority level 8" .
+
+cf:PR_09 a tesa:PriorityRelator , owl:NamedIndividual ;
+    tesa:priorityValue "9"^^xsd:nonNegativeInteger ;
+    rdfs:label "Priority level 9" .
+
+cf:PR_10 a tesa:PriorityRelator , owl:NamedIndividual ;
+    tesa:priorityValue "10"^^xsd:nonNegativeInteger ;
+    rdfs:label "Priority level 10" .
+
+#################################################################
+# Validity intervals (OWL-Time)
+#################################################################
+
+cf:IV_Shift1_2026 a time:Interval , owl:NamedIndividual ;
+    rdfs:label "Day shift window, production year 2026" ;
+    time:hasBeginning cf:IV_Shift1_2026_beg ;
+    time:hasEnd cf:IV_Shift1_2026_end .
+
+cf:IV_Shift1_2026_beg a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-01-05T06:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_Shift1_2026_end a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-12-18T14:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_Shift2_2026 a time:Interval , owl:NamedIndividual ;
+    rdfs:label "Evening shift window" ;
+    time:hasBeginning cf:IV_Shift2_2026_beg ;
+    time:hasEnd cf:IV_Shift2_2026_end .
+
+cf:IV_Shift2_2026_beg a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-01-05T14:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_Shift2_2026_end a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-12-18T22:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_NightWindow_2026 a time:Interval , owl:NamedIndividual ;
+    rdfs:label "Night window: charging and maintenance" ;
+    time:hasBeginning cf:IV_NightWindow_2026_beg ;
+    time:hasEnd cf:IV_NightWindow_2026_end .
+
+cf:IV_NightWindow_2026_beg a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-01-05T22:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_NightWindow_2026_end a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-12-19T06:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_Q3_2026 a time:Interval , owl:NamedIndividual ;
+    rdfs:label "Third quarter 2026" ;
+    time:hasBeginning cf:IV_Q3_2026_beg ;
+    time:hasEnd cf:IV_Q3_2026_end .
+
+cf:IV_Q3_2026_beg a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-07-01T00:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_Q3_2026_end a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-09-30T23:59:59Z"^^xsd:dateTimeStamp .
+
+cf:IV_SummerSchedule a time:Interval , owl:NamedIndividual ;
+    rdfs:label "Summer schedule validity" ;
+    time:hasBeginning cf:IV_SummerSchedule_beg ;
+    time:hasEnd cf:IV_SummerSchedule_end .
+
+cf:IV_SummerSchedule_beg a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-06-01T00:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_SummerSchedule_end a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-08-31T23:59:59Z"^^xsd:dateTimeStamp .
+
+cf:IV_MaintenanceWeekend a time:Interval , owl:NamedIndividual ;
+    rdfs:label "July maintenance weekend" ;
+    time:hasBeginning cf:IV_MaintenanceWeekend_beg ;
+    time:hasEnd cf:IV_MaintenanceWeekend_end .
+
+cf:IV_MaintenanceWeekend_beg a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-07-10T22:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_MaintenanceWeekend_end a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-07-13T06:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_HolidayShutdown a time:Interval , owl:NamedIndividual ;
+    rdfs:label "Holiday shutdown" ;
+    time:hasBeginning cf:IV_HolidayShutdown_beg ;
+    time:hasEnd cf:IV_HolidayShutdown_end .
+
+cf:IV_HolidayShutdown_beg a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-12-24T00:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_HolidayShutdown_end a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2027-01-02T06:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_AuditWindow_Jul a time:Interval , owl:NamedIndividual ;
+    rdfs:label "Monthly audit window, July" ;
+    time:hasBeginning cf:IV_AuditWindow_Jul_beg ;
+    time:hasEnd cf:IV_AuditWindow_Jul_end .
+
+cf:IV_AuditWindow_Jul_beg a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-07-06T08:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_AuditWindow_Jul_end a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-07-06T18:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_EnergyPeak a time:Interval , owl:NamedIndividual ;
+    rdfs:label "Grid energy peak window" ;
+    time:hasBeginning cf:IV_EnergyPeak_beg ;
+    time:hasEnd cf:IV_EnergyPeak_end .
+
+cf:IV_EnergyPeak_beg a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-07-01T17:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_EnergyPeak_end a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-07-01T21:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_Changeover_Aug a time:Interval , owl:NamedIndividual ;
+    rdfs:label "Sedan-to-EV line changeover window" ;
+    time:hasBeginning cf:IV_Changeover_Aug_beg ;
+    time:hasEnd cf:IV_Changeover_Aug_end .
+
+cf:IV_Changeover_Aug_beg a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-08-15T06:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_Changeover_Aug_end a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-08-22T22:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_FirmwareWindow a time:Interval , owl:NamedIndividual ;
+    rdfs:label "Firmware update window" ;
+    time:hasBeginning cf:IV_FirmwareWindow_beg ;
+    time:hasEnd cf:IV_FirmwareWindow_end .
+
+cf:IV_FirmwareWindow_beg a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-07-11T02:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_FirmwareWindow_end a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-07-11T05:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_PaintSlot_A a time:Interval , owl:NamedIndividual ;
+    rdfs:label "Paint booth slot A" ;
+    time:hasBeginning cf:IV_PaintSlot_A_beg ;
+    time:hasEnd cf:IV_PaintSlot_A_end .
+
+cf:IV_PaintSlot_A_beg a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-07-07T08:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_PaintSlot_A_end a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-07-07T12:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_PaintSlot_B a time:Interval , owl:NamedIndividual ;
+    rdfs:label "Paint booth slot B (overlaps slot A)" ;
+    time:hasBeginning cf:IV_PaintSlot_B_beg ;
+    time:hasEnd cf:IV_PaintSlot_B_end .
+
+cf:IV_PaintSlot_B_beg a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-07-07T08:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_PaintSlot_B_end a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-07-07T12:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_DiagnosticsSlot a time:Interval , owl:NamedIndividual ;
+    rdfs:label "Diagnostics slot (overlaps firmware window)" ;
+    time:hasBeginning cf:IV_DiagnosticsSlot_beg ;
+    time:hasEnd cf:IV_DiagnosticsSlot_end .
+
+cf:IV_DiagnosticsSlot_beg a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-07-11T02:30:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_DiagnosticsSlot_end a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-07-11T04:30:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_SafetyDrill_Jul a time:Interval , owl:NamedIndividual ;
+    rdfs:label "July safety drill" ;
+    time:hasBeginning cf:IV_SafetyDrill_Jul_beg ;
+    time:hasEnd cf:IV_SafetyDrill_Jul_end .
+
+cf:IV_SafetyDrill_Jul_beg a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-07-15T10:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_SafetyDrill_Jul_end a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-07-15T11:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_DispatchDaily a time:Interval , owl:NamedIndividual ;
+    rdfs:label "Daily dispatch window" ;
+    time:hasBeginning cf:IV_DispatchDaily_beg ;
+    time:hasEnd cf:IV_DispatchDaily_end .
+
+cf:IV_DispatchDaily_beg a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-07-07T16:00:00Z"^^xsd:dateTimeStamp .
+
+cf:IV_DispatchDaily_end a time:Instant , owl:NamedIndividual ;
+    time:inXSDDateTimeStamp "2026-07-07T18:00:00Z"^^xsd:dateTimeStamp .
+
+#################################################################
+# Time triggers (tesa:TimeTrigger) with OWL-Time descriptions
+#################################################################
+
+cf:TT_DailyShiftStart_North_time a time:GeneralDateTimeDescription , owl:NamedIndividual ;
+    time:hour "6"^^xsd:nonNegativeInteger .
+
+cf:TT_DailyShiftStart_North a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "Daily day-shift start at Plant North" ;
+    tesa:hasTriggerTime cf:TT_DailyShiftStart_North_time ;
+    tesa:validDuringInterval cf:IV_Shift1_2026 ;
+    tesa:hasAction cf:A_StartConveyor_North , cf:A_ActivateWelding_North .
+
+cf:TT_DailyShiftStart_East_time a time:GeneralDateTimeDescription , owl:NamedIndividual ;
+    time:hour "6"^^xsd:nonNegativeInteger .
+
+cf:TT_DailyShiftStart_East a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "Daily day-shift start at Plant East" ;
+    tesa:hasTriggerTime cf:TT_DailyShiftStart_East_time ;
+    tesa:validDuringInterval cf:IV_Shift1_2026 ;
+    tesa:hasAction cf:A_StartConveyor_East .
+
+cf:TT_EveningShiftStart_time a time:GeneralDateTimeDescription , owl:NamedIndividual ;
+    time:hour "14"^^xsd:nonNegativeInteger .
+
+cf:TT_EveningShiftStart a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "Evening shift start, both plants" ;
+    tesa:hasTriggerTime cf:TT_EveningShiftStart_time ;
+    tesa:validDuringInterval cf:IV_Shift2_2026 ;
+    tesa:hasAction cf:A_RotateInspectors .
+
+cf:TT_NightWindowStart_time a time:GeneralDateTimeDescription , owl:NamedIndividual ;
+    time:hour "22"^^xsd:nonNegativeInteger .
+
+cf:TT_NightWindowStart a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "Night window start" ;
+    tesa:hasTriggerTime cf:TT_NightWindowStart_time ;
+    tesa:validDuringInterval cf:IV_NightWindow_2026 ;
+    tesa:hasAction cf:A_ChargeEVBatteries , cf:A_StopConveyor_North , cf:A_StopConveyor_East .
+
+cf:TT_WeeklyMaintenance_time a time:GeneralDateTimeDescription , owl:NamedIndividual ;
+    time:dayOfWeek time:Friday ;
+    time:hour "22"^^xsd:nonNegativeInteger .
+
+cf:TT_WeeklyMaintenance a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "Weekly maintenance, Friday 22:00" ;
+    tesa:hasTriggerTime cf:TT_WeeklyMaintenance_time ;
+    tesa:validDuringInterval cf:IV_MaintenanceWeekend ;
+    tesa:hasAction cf:A_LockdownStations , cf:A_LubricateConveyor .
+
+cf:TT_WeldingCalibration_time a time:GeneralDateTimeDescription , owl:NamedIndividual ;
+    time:dayOfWeek time:Sunday ;
+    time:hour "4"^^xsd:nonNegativeInteger .
+
+cf:TT_WeldingCalibration a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "Welding calibration, Sunday 04:00" ;
+    tesa:hasTriggerTime cf:TT_WeldingCalibration_time ;
+    tesa:validDuringInterval cf:IV_MaintenanceWeekend ;
+    tesa:hasAction cf:A_CalibrateWeldingRobots .
+
+cf:TT_MonthlyAudit_time a time:GeneralDateTimeDescription , owl:NamedIndividual ;
+    time:dayOfWeek time:Monday ;
+    time:hour "8"^^xsd:nonNegativeInteger .
+
+cf:TT_MonthlyAudit a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "Monthly audit, first Monday 08:00" ;
+    tesa:hasTriggerTime cf:TT_MonthlyAudit_time ;
+    tesa:validDuringInterval cf:IV_AuditWindow_Jul ;
+    tesa:hasAction cf:A_AuditLine_NorthSedan .
+
+cf:TT_QuarterlyInventory_time a time:GeneralDateTimeDescription , owl:NamedIndividual ;
+    time:monthOfYear <http://www.w3.org/ns/time/gregorian#July> ;
+    time:hour "0"^^xsd:nonNegativeInteger .
+
+cf:TT_QuarterlyInventory a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "Quarterly inventory, July 1st pattern" ;
+    tesa:hasTriggerTime cf:TT_QuarterlyInventory_time ;
+    tesa:validDuringInterval cf:IV_Q3_2026 ;
+    tesa:hasAction cf:A_RunInventory .
+
+cf:TT_PaintVentilation_time a time:GeneralDateTimeDescription , owl:NamedIndividual ;
+    time:minute "0"^^xsd:decimal .
+
+cf:TT_PaintVentilation a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "Paint booth ventilation check, hourly" ;
+    tesa:hasTriggerTime cf:TT_PaintVentilation_time ;
+    tesa:validDuringInterval cf:IV_Shift1_2026 ;
+    tesa:hasAction cf:A_VentilatePaintBooths .
+
+cf:TT_PaintSlotMorning_time a time:GeneralDateTimeDescription , owl:NamedIndividual ;
+    time:hour "8"^^xsd:nonNegativeInteger .
+
+cf:TT_PaintSlotMorning a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "Morning paint slot allocation" ;
+    tesa:hasTriggerTime cf:TT_PaintSlotMorning_time ;
+    tesa:validDuringInterval cf:IV_PaintSlot_A ;
+    tesa:hasAction cf:A_PaintSedanBatch , cf:A_PaintSUVBatch .
+
+cf:TT_EnergyPeakStart_time a time:GeneralDateTimeDescription , owl:NamedIndividual ;
+    time:hour "17"^^xsd:nonNegativeInteger .
+
+cf:TT_EnergyPeakStart a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "Grid energy peak start" ;
+    tesa:hasTriggerTime cf:TT_EnergyPeakStart_time ;
+    tesa:validDuringInterval cf:IV_EnergyPeak ;
+    tesa:hasAction cf:A_ReduceEnergyLoad .
+
+cf:TT_ProductionBoost_time a time:GeneralDateTimeDescription , owl:NamedIndividual ;
+    time:hour "9"^^xsd:nonNegativeInteger .
+
+cf:TT_ProductionBoost a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "Q3 production boost directive" ;
+    tesa:hasTriggerTime cf:TT_ProductionBoost_time ;
+    tesa:validDuringInterval cf:IV_Q3_2026 ;
+    tesa:hasAction cf:A_BoostProduction .
+
+cf:TT_SoftwareUpdate_time a time:GeneralDateTimeDescription , owl:NamedIndividual ;
+    time:dayOfWeek time:Saturday ;
+    time:hour "2"^^xsd:nonNegativeInteger .
+
+cf:TT_SoftwareUpdate a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "Firmware update, Saturday 02:00" ;
+    tesa:hasTriggerTime cf:TT_SoftwareUpdate_time ;
+    tesa:validDuringInterval cf:IV_FirmwareWindow ;
+    tesa:hasAction cf:A_UpdateRobotFirmware .
+
+cf:TT_NightDiagnostics_time a time:GeneralDateTimeDescription , owl:NamedIndividual ;
+    time:hour "2"^^xsd:nonNegativeInteger .
+
+cf:TT_NightDiagnostics a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "Night diagnostics run" ;
+    tesa:hasTriggerTime cf:TT_NightDiagnostics_time ;
+    tesa:validDuringInterval cf:IV_DiagnosticsSlot ;
+    tesa:hasAction cf:A_RunDiagnostics .
+
+cf:TT_SafetyDrill_time a time:GeneralDateTimeDescription , owl:NamedIndividual ;
+    time:hour "10"^^xsd:nonNegativeInteger .
+
+cf:TT_SafetyDrill a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "Monthly safety drill" ;
+    tesa:hasTriggerTime cf:TT_SafetyDrill_time ;
+    tesa:validDuringInterval cf:IV_SafetyDrill_Jul ;
+    tesa:hasAction cf:A_SafetyDrill .
+
+cf:TT_DailyDispatch_time a time:GeneralDateTimeDescription , owl:NamedIndividual ;
+    time:hour "16"^^xsd:nonNegativeInteger .
+
+cf:TT_DailyDispatch a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "Daily logistics dispatch, 16:00" ;
+    tesa:hasTriggerTime cf:TT_DailyDispatch_time ;
+    tesa:validDuringInterval cf:IV_DispatchDaily ;
+    tesa:hasAction cf:A_DispatchTrucks .
+
+cf:TT_HolidayShutdown_time a time:GeneralDateTimeDescription , owl:NamedIndividual ;
+    time:monthOfYear <http://www.w3.org/ns/time/gregorian#December> ;
+    time:hour "0"^^xsd:nonNegativeInteger .
+
+cf:TT_HolidayShutdown a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "Holiday shutdown start (December)" ;
+    tesa:hasTriggerTime cf:TT_HolidayShutdown_time ;
+    tesa:validDuringInterval cf:IV_HolidayShutdown ;
+    tesa:hasAction cf:A_ShutdownAllLines .
+
+cf:TT_SummerScheduleStart_time a time:GeneralDateTimeDescription , owl:NamedIndividual ;
+    time:monthOfYear <http://www.w3.org/ns/time/gregorian#June> ;
+    time:hour "0"^^xsd:nonNegativeInteger .
+
+cf:TT_SummerScheduleStart a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "Summer schedule activation (June)" ;
+    tesa:hasTriggerTime cf:TT_SummerScheduleStart_time ;
+    tesa:validDuringInterval cf:IV_SummerSchedule ;
+    tesa:hasAction cf:A_ApplySummerShifts .
+
+cf:TT_LineChangeover_time a time:GeneralDateTimeDescription , owl:NamedIndividual ;
+    time:hour "6"^^xsd:nonNegativeInteger .
+
+cf:TT_LineChangeover a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "Sedan-to-EV changeover start" ;
+    tesa:hasTriggerTime cf:TT_LineChangeover_time ;
+    tesa:validDuringInterval cf:IV_Changeover_Aug ;
+    tesa:hasAction cf:A_ChangeoverSedanToEV .
+
+cf:TT_QualitySampling_time a time:GeneralDateTimeDescription , owl:NamedIndividual ;
+    time:hour "12"^^xsd:nonNegativeInteger .
+
+cf:TT_QualitySampling a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "Per-shift quality sampling" ;
+    tesa:hasTriggerTime cf:TT_QualitySampling_time ;
+    tesa:validDuringInterval cf:IV_Shift1_2026 ;
+    tesa:hasAction cf:A_SampleQuality .
+
+#################################################################
+# Actions (tesa:Action)
+#################################################################
+
+cf:A_StartConveyor_North a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Start main conveyor, Plant North" ;
+    cf:appliesTo cf:Plant_North ;
+    tesa:hasPriorityRelator cf:PR_07 ;
+    tesa:validDuringInterval cf:IV_Shift1_2026 ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_StopConveyor_North a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Stop main conveyor, Plant North" ;
+    cf:appliesTo cf:Plant_North ;
+    tesa:hasPriorityRelator cf:PR_08 ;
+    tesa:validDuringInterval cf:IV_NightWindow_2026 ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_StartConveyor_East a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Start main conveyor, Plant East" ;
+    cf:appliesTo cf:Plant_East ;
+    tesa:hasPriorityRelator cf:PR_07 ;
+    tesa:validDuringInterval cf:IV_Shift1_2026 ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_StopConveyor_East a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Stop main conveyor, Plant East" ;
+    cf:appliesTo cf:Plant_East ;
+    tesa:hasPriorityRelator cf:PR_08 ;
+    tesa:validDuringInterval cf:IV_NightWindow_2026 ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_ActivateWelding_North a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Activate welding cells, Plant North" ;
+    cf:appliesTo cf:ST_North_Sedan_WEL ;
+    tesa:hasPriorityRelator cf:PR_06 ;
+    tesa:validDuringInterval cf:IV_Shift1_2026 ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_CalibrateWeldingRobots a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Calibrate welding robots" ;
+    cf:appliesTo cf:ST_North_Sedan_WEL ;
+    tesa:hasPriorityRelator cf:PR_05 ;
+    tesa:validDuringInterval cf:IV_MaintenanceWeekend ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_PaintSedanBatch a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Paint sedan batch in shared booth" ;
+    cf:appliesTo cf:ST_North_Sedan_PNT ;
+    tesa:hasPriorityRelator cf:PR_06 ;
+    tesa:validDuringInterval cf:IV_PaintSlot_A ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_PaintSUVBatch a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Paint SUV batch in shared booth" ;
+    cf:appliesTo cf:ST_North_Sedan_PNT ;
+    tesa:hasPriorityRelator cf:PR_04 ;
+    tesa:validDuringInterval cf:IV_PaintSlot_B ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_VentilatePaintBooths a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Ventilate all paint booths" ;
+    cf:appliesTo cf:ST_North_Sedan_PNT ;
+    tesa:hasPriorityRelator cf:PR_09 ;
+    tesa:validDuringInterval cf:IV_Shift1_2026 ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_ChargeEVBatteries a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Charge EV battery packs" ;
+    cf:appliesTo cf:PL_North_EV ;
+    tesa:hasPriorityRelator cf:PR_06 ;
+    tesa:validDuringInterval cf:IV_NightWindow_2026 ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_RunDiagnostics a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Run robot diagnostics suite" ;
+    cf:appliesTo cf:Plant_North ;
+    tesa:hasPriorityRelator cf:PR_04 ;
+    tesa:validDuringInterval cf:IV_DiagnosticsSlot ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_UpdateRobotFirmware a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Update robot firmware" ;
+    cf:appliesTo cf:Plant_North ;
+    tesa:hasPriorityRelator cf:PR_07 ;
+    tesa:validDuringInterval cf:IV_FirmwareWindow ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_LockdownStations a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Lock down stations for maintenance" ;
+    cf:appliesTo cf:Plant_North ;
+    tesa:hasPriorityRelator cf:PR_09 ;
+    tesa:validDuringInterval cf:IV_MaintenanceWeekend ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_LubricateConveyor a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Lubricate conveyor system" ;
+    cf:appliesTo cf:Plant_North ;
+    tesa:hasPriorityRelator cf:PR_05 ;
+    tesa:validDuringInterval cf:IV_MaintenanceWeekend ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_ResumeProduction a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Resume production after maintenance" ;
+    cf:appliesTo cf:Plant_North ;
+    tesa:hasPriorityRelator cf:PR_07 ;
+    tesa:validDuringInterval cf:IV_Shift1_2026 ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_AuditLine_NorthSedan a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Audit North Sedan line" ;
+    cf:appliesTo cf:PL_North_Sedan ;
+    tesa:hasPriorityRelator cf:PR_05 ;
+    tesa:validDuringInterval cf:IV_AuditWindow_Jul ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_RunInventory a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Run quarterly inventory" ;
+    cf:appliesTo cf:Div_Logistics ;
+    tesa:hasPriorityRelator cf:PR_04 ;
+    tesa:validDuringInterval cf:IV_Q3_2026 ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_DispatchTrucks a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Dispatch finished-vehicle trucks" ;
+    cf:appliesTo cf:Div_Logistics ;
+    tesa:hasPriorityRelator cf:PR_06 ;
+    tesa:validDuringInterval cf:IV_DispatchDaily ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_ReduceEnergyLoad a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Reduce energy load during grid peak" ;
+    cf:appliesTo cf:CC_Global ;
+    tesa:hasPriorityRelator cf:PR_10 ;
+    tesa:validDuringInterval cf:IV_EnergyPeak ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_BoostProduction a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Boost production for Q3 targets" ;
+    cf:appliesTo cf:CC_Global ;
+    tesa:hasPriorityRelator cf:PR_03 ;
+    tesa:validDuringInterval cf:IV_Q3_2026 ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_SafetyDrill a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Conduct safety drill" ;
+    cf:appliesTo cf:Plant_North ;
+    tesa:hasPriorityRelator cf:PR_08 ;
+    tesa:validDuringInterval cf:IV_SafetyDrill_Jul ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_RotateInspectors a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Rotate inspection personnel" ;
+    cf:appliesTo cf:Div_Quality ;
+    tesa:hasPriorityRelator cf:PR_03 ;
+    tesa:validDuringInterval cf:IV_Shift2_2026 ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_SampleQuality a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Sample per-shift product quality" ;
+    cf:appliesTo cf:Div_Quality ;
+    tesa:hasPriorityRelator cf:PR_05 ;
+    tesa:validDuringInterval cf:IV_Shift1_2026 ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_ShutdownAllLines a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Shut down all lines for holidays" ;
+    cf:appliesTo cf:CC_Global ;
+    tesa:hasPriorityRelator cf:PR_10 ;
+    tesa:validDuringInterval cf:IV_HolidayShutdown ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_ApplySummerShifts a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Apply summer shift schedule" ;
+    cf:appliesTo cf:CC_Global ;
+    tesa:hasPriorityRelator cf:PR_04 ;
+    tesa:validDuringInterval cf:IV_SummerSchedule ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_ChangeoverSedanToEV a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Change over Sedan line to EV" ;
+    cf:appliesTo cf:PL_East_Sedan ;
+    tesa:hasPriorityRelator cf:PR_06 ;
+    tesa:validDuringInterval cf:IV_Changeover_Aug ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_HaltForChangeover a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Halt East Sedan output for changeover" ;
+    cf:appliesTo cf:PL_East_Sedan ;
+    tesa:hasPriorityRelator cf:PR_06 ;
+    tesa:validDuringInterval cf:IV_Changeover_Aug ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_KeepSedanOutput a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Keep East Sedan output for backlog" ;
+    cf:appliesTo cf:PL_East_Sedan ;
+    tesa:hasPriorityRelator cf:PR_02 ;
+    tesa:validDuringInterval cf:IV_Changeover_Aug ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_OvertimeWindow a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Open overtime window" ;
+    cf:appliesTo cf:Plant_East ;
+    tesa:hasPriorityRelator cf:PR_02 ;
+    tesa:validDuringInterval cf:IV_Q3_2026 ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+cf:A_PreheatPaintBooth a tesa:Action , owl:NamedIndividual ;
+    rdfs:label "Pre-heat paint booth" ;
+    cf:appliesTo cf:ST_North_Sedan_PNT ;
+    tesa:hasPriorityRelator cf:PR_03 ;
+    tesa:validDuringInterval cf:IV_PaintSlot_A ;
+    tesa:executeIndicator "false"^^xsd:boolean ;
+    tesa:checkedIndicator "false"^^xsd:boolean .
+
+#################################################################
+# Conflict groups (tesa:ConflictedActions)
+#################################################################
+
+cf:CA_PaintBoothContention a tesa:ConflictedActions , owl:NamedIndividual ;
+    rdfs:label "Shared paint booth: sedan vs SUV batch vs pre-heat" ;
+    tesa:hasAction cf:A_PaintSedanBatch , cf:A_PaintSUVBatch , cf:A_PreheatPaintBooth .
+
+cf:A_PaintSedanBatch tesa:conflictsWith cf:A_PaintSUVBatch .
+cf:A_PaintSedanBatch tesa:conflictsWith cf:A_PreheatPaintBooth .
+cf:A_PaintSUVBatch tesa:conflictsWith cf:A_PreheatPaintBooth .
+
+cf:CA_EnergyPeak a tesa:ConflictedActions , owl:NamedIndividual ;
+    rdfs:label "Energy-peak reduction vs Q3 production boost vs overtime" ;
+    tesa:hasAction cf:A_ReduceEnergyLoad , cf:A_BoostProduction , cf:A_OvertimeWindow .
+
+cf:A_ReduceEnergyLoad tesa:conflictsWith cf:A_BoostProduction .
+cf:A_ReduceEnergyLoad tesa:conflictsWith cf:A_OvertimeWindow .
+cf:A_BoostProduction tesa:conflictsWith cf:A_OvertimeWindow .
+
+cf:CA_MaintenanceVsProduction a tesa:ConflictedActions , owl:NamedIndividual ;
+    rdfs:label "Maintenance lockdown vs production resume" ;
+    tesa:hasAction cf:A_LockdownStations , cf:A_ResumeProduction .
+
+cf:A_LockdownStations tesa:conflictsWith cf:A_ResumeProduction .
+
+cf:CA_ConveyorState_North a tesa:ConflictedActions , owl:NamedIndividual ;
+    rdfs:label "Conveyor start vs stop, Plant North" ;
+    tesa:hasAction cf:A_StartConveyor_North , cf:A_StopConveyor_North .
+
+cf:A_StartConveyor_North tesa:conflictsWith cf:A_StopConveyor_North .
+
+cf:CA_FirmwareVsDiagnostics a tesa:ConflictedActions , owl:NamedIndividual ;
+    rdfs:label "Firmware update vs diagnostics in the same window" ;
+    tesa:hasAction cf:A_UpdateRobotFirmware , cf:A_RunDiagnostics .
+
+cf:A_UpdateRobotFirmware tesa:conflictsWith cf:A_RunDiagnostics .
+
+cf:CA_Changeover a tesa:ConflictedActions , owl:NamedIndividual ;
+    rdfs:label "Line changeover vs keeping sedan output" ;
+    tesa:hasAction cf:A_ChangeoverSedanToEV , cf:A_KeepSedanOutput , cf:A_HaltForChangeover .
+
+cf:A_ChangeoverSedanToEV tesa:conflictsWith cf:A_KeepSedanOutput .
+cf:A_ChangeoverSedanToEV tesa:conflictsWith cf:A_HaltForChangeover .
+cf:A_KeepSedanOutput tesa:conflictsWith cf:A_HaltForChangeover .
+

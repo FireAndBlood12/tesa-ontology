@@ -1,0 +1,65 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix tesa: <http://example.org/tesa#> .
+@prefix dul:  <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+#################################################################
+# TESA -> DOLCE alignment module (via DOLCE+DnS Ultralite, DUL)
+#
+# DUL is the widely used OWL 2 DL rendering of DOLCE combined
+# with the Descriptions-and-Situations pattern, which fits TESA
+# naturally: a TimeTrigger is a *description* that defines when
+# actions apply; a PriorityRelator is a *parameter* whose value
+# region is the non-negative integers.
+#################################################################
+
+<http://example.org/tesa/align/dolce> a owl:Ontology ;
+    owl:imports <http://example.org/tesa> ;
+    owl:imports <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl> ;
+    rdfs:comment "Bridge axioms aligning the TESA scheduling constructs with DOLCE through DUL."@en .
+
+### Local declarations of the referenced DUL classes (self-containment)
+dul:Event a owl:Class ; rdfs:label "Event"@en .
+dul:Action a owl:Class ; rdfs:subClassOf dul:Event ; rdfs:label "Action"@en .
+dul:Description a owl:Class ; rdfs:label "Description"@en .
+dul:Parameter a owl:Class ; rdfs:label "Parameter"@en .
+dul:Collection a owl:Class ; rdfs:label "Collection"@en .
+dul:TimeInterval a owl:Class ; rdfs:label "TimeInterval"@en .
+
+#################################################################
+# Bridge axioms
+#################################################################
+
+# TESA actions are DUL actions (planned events carried out by the
+# cyber-physical system).
+tesa:Action rdfs:subClassOf dul:Action .
+
+# A time trigger is a DUL description: it defines the (temporal)
+# situation in which its actions are to be executed. This is the
+# Descriptions-and-Situations pattern applied to scheduling.
+tesa:TimeTrigger rdfs:subClassOf dul:Description ;
+    skos:note "A trigger describes the conditions (time pattern + validity interval) that classify the situations in which the linked actions must run."@en .
+
+# A priority relator is a DUL parameter: a concept whose value is
+# a region (here, the non-negative integer tesa:priorityValue).
+tesa:PriorityRelator rdfs:subClassOf dul:Parameter .
+
+# A conflict group is a DUL collection of actions.
+tesa:ConflictedActions rdfs:subClassOf dul:Collection .
+
+# OWL-Time intervals are DUL time intervals.
+time:Interval rdfs:subClassOf dul:TimeInterval .
+
+#################################################################
+# Consistency probe
+#################################################################
+
+tesa:DULProbe_Trigger a tesa:TimeTrigger , owl:NamedIndividual ;
+    rdfs:label "DUL alignment probe trigger" ;
+    tesa:hasAction tesa:DULProbe_Action .
+tesa:DULProbe_Action a tesa:Action , owl:NamedIndividual ;
+    tesa:executeIndicator "false"^^xsd:boolean .
