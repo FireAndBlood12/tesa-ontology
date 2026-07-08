@@ -1,0 +1,4 @@
+rdflib>=7.0
+owlrl>=6.0
+# optional, needed only for the Pellet check (level 2); requires a Java runtime.
+owlready2==0.47
