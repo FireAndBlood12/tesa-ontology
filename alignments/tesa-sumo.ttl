@@ -1,66 +1,54 @@
-@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl:  <http://www.w3.org/2002/07/owl#> .
-@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
-@prefix time: <http://www.w3.org/2006/time#> .
-@prefix tesa: <http://example.org/tesa#> .
-@prefix sumo: <http://www.ontologyportal.org/SUMO.owl#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix tesa: <http://example.org/tesa#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-#################################################################
-# TESA -> SUMO alignment module
-#
-# SUMO (Suggested Upper Merged Ontology) is natively expressed in
-# SUO-KIF; this module targets the OWL export published at
-# ontologyportal.org. The mapping is additive: no SUMO axiom is
-# redefined or restricted, so importing SUMO's OWL export together
-# with TESA preserves consistency.
-#################################################################
+tesa:PriorityRelator rdfs:subClassOf <http://www.ontologyportal.org/SUMO.owl#RelationalAttribute> .
 
-<http://example.org/tesa/align/sumo> a owl:Ontology ;
-    owl:imports <http://example.org/tesa> ;
-    owl:imports <http://www.ontologyportal.org/SUMO.owl> ;
-    rdfs:comment "Bridge axioms aligning the TESA scheduling constructs with SUMO categories (OWL export)."@en .
+tesa:SUMOProbe_Group a tesa:ConflictedActions,
+        owl:NamedIndividual ;
+    tesa:hasAction tesa:SUMOProbe_Action .
 
-### Local declarations of the referenced SUMO classes (self-containment)
-sumo:Process a owl:Class ; rdfs:label "Process"@en .
-sumo:IntentionalProcess a owl:Class ; rdfs:subClassOf sumo:Process .
-sumo:Procedure a owl:Class ; rdfs:label "Procedure"@en .
-sumo:RelationalAttribute a owl:Class ; rdfs:label "RelationalAttribute"@en .
-sumo:Collection a owl:Class ; rdfs:label "Collection"@en .
-sumo:TimeInterval a owl:Class ; rdfs:label "TimeInterval"@en .
-sumo:TimePoint a owl:Class ; rdfs:label "TimePoint"@en .
-
-#################################################################
-# Bridge axioms
-#################################################################
-
-# TESA actions are intentional processes: they are initiated
-# deliberately by the scheduling logic of the system.
-tesa:Action rdfs:subClassOf sumo:IntentionalProcess .
-
-# A time trigger is a procedure: a specification of when and what
-# should be brought about.
-tesa:TimeTrigger rdfs:subClassOf sumo:Procedure ;
+tesa:TimeTrigger rdfs:subClassOf <http://www.ontologyportal.org/SUMO.owl#Procedure> ;
     skos:note "SUMO Procedure is a sequence-of-instructions content class; a TESA trigger prescribes the initiation of actions under temporal conditions."@en .
 
-# Priority is a relational attribute of an action: it holds in
-# relation to the other members of a conflict group.
-tesa:PriorityRelator rdfs:subClassOf sumo:RelationalAttribute .
+<http://example.org/tesa/align/sumo> a owl:Ontology ;
+    rdfs:comment "Bridge axioms aligning the TESA scheduling constructs with SUMO categories (OWL export)."@en ;
+    owl:imports <http://example.org/tesa> .
 
-# A conflict group is a SUMO collection of actions.
-tesa:ConflictedActions rdfs:subClassOf sumo:Collection .
+time:Instant rdfs:subClassOf <http://www.ontologyportal.org/SUMO.owl#TimePoint> .
 
-# OWL-Time intervals and instants map onto SUMO time regions.
-time:Interval rdfs:subClassOf sumo:TimeInterval .
-time:Instant rdfs:subClassOf sumo:TimePoint .
+time:Interval rdfs:subClassOf <http://www.ontologyportal.org/SUMO.owl#TimeInterval> .
 
-#################################################################
-# Consistency probe
-#################################################################
+tesa:Action rdfs:subClassOf <http://www.ontologyportal.org/SUMO.owl#IntentionalProcess> .
 
-tesa:SUMOProbe_Group a tesa:ConflictedActions , owl:NamedIndividual ;
-    tesa:hasAction tesa:SUMOProbe_Action .
-tesa:SUMOProbe_Action a tesa:Action , owl:NamedIndividual ;
+tesa:ConflictedActions rdfs:subClassOf <http://www.ontologyportal.org/SUMO.owl#Collection> .
+
+tesa:SUMOProbe_Action a tesa:Action,
+        owl:NamedIndividual ;
     rdfs:label "SUMO alignment probe action" ;
-    tesa:executeIndicator "false"^^xsd:boolean .
+    tesa:executeIndicator false .
+
+<http://www.ontologyportal.org/SUMO.owl#Collection> a owl:Class ;
+    rdfs:label "Collection"@en .
+
+<http://www.ontologyportal.org/SUMO.owl#IntentionalProcess> a owl:Class ;
+    rdfs:subClassOf <http://www.ontologyportal.org/SUMO.owl#Process> .
+
+<http://www.ontologyportal.org/SUMO.owl#Procedure> a owl:Class ;
+    rdfs:label "Procedure"@en .
+
+<http://www.ontologyportal.org/SUMO.owl#Process> a owl:Class ;
+    rdfs:label "Process"@en .
+
+<http://www.ontologyportal.org/SUMO.owl#RelationalAttribute> a owl:Class ;
+    rdfs:label "RelationalAttribute"@en .
+
+<http://www.ontologyportal.org/SUMO.owl#TimeInterval> a owl:Class ;
+    rdfs:label "TimeInterval"@en .
+
+<http://www.ontologyportal.org/SUMO.owl#TimePoint> a owl:Class ;
+    rdfs:label "TimePoint"@en .
+

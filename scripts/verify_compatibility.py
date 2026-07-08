@@ -146,10 +146,23 @@ def main():
             iso = to_isomorphic(graphs[p]) == to_isomorphic(load(twin))
             fmt_ok &= iso
             print(f"  [{'OK' if iso else 'FAIL'}] {os.path.relpath(twin, ROOT)}"
-                  f" is isomorphic to its {p[-3:]} twin")
+                  f" is isomorphic to its {p[-3:]} twin"
+                  + ("" if iso else "  (stale copy - run scripts/sync_formats.py)"))
         else:
             fmt_ok = False
-            print(f"  [FAIL] missing twin serialization: {twin}")
+            print(f"  [FAIL] missing twin serialization: {twin}"
+                  "  (run scripts/sync_formats.py)")
+    # orphan check: a .rdf/.ttl file whose twin was deleted or renamed
+    import glob as _glob
+    known = {os.path.normpath(p) for p in [CORE, ABOX] + MODULES}
+    for d in ("alignments", "integrations", "examples", "ontology"):
+        for p in _glob.glob(os.path.join(ROOT, d, "*.rdf")) + \
+                 _glob.glob(os.path.join(ROOT, d, "*.ttl")):
+            twin = p[:-4] + (".ttl" if p.endswith(".rdf") else ".rdf")
+            if not os.path.exists(twin):
+                fmt_ok = False
+                print(f"  [FAIL] orphan file without a twin: "
+                      f"{os.path.relpath(p, ROOT)}  (run scripts/sync_formats.py)")
 
     print("\n== Level 1a: structural checks on the car-factory ABox ==")
     base = graphs[CORE] + graphs[ABOX]
@@ -167,7 +180,7 @@ def main():
     merged = rdflib.Graph()
     for g in graphs.values():
         merged += g
-    all_ok &= rl_consistency(merged, "core + ABox + all 8 modules")
+    all_ok &= rl_consistency(merged, f"core + ABox + all {len(MODULES)} modules")
 
     print("\n== Level 2: Pellet (optional) ==")
     pellet_check([CORE, ABOX] + MODULES)
